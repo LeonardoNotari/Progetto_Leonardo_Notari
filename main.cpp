@@ -1,6 +1,9 @@
 #include <iostream>
+#include "GameCharacter.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    int basicWeaponPower=0;
+    GameCharacter player;
+    Weapon gun(basicWeaponPower);
     return 0;
 }

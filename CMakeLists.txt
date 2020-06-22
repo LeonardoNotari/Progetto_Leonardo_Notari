@@ -3,4 +3,4 @@ project(Progetto_Leonardo_Notari)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Progetto_Leonardo_Notari main.cpp GameCharcter.cpp GameCharcter.h)
+add_executable(Progetto_Leonardo_Notari main.cpp GameCharacter.cpp GameCharacter.h Weapon.cpp Weapon.h)
