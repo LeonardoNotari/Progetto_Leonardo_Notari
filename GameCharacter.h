@@ -10,10 +10,13 @@
 
 class GameCharacter{
 public:
-    GameCharacter();
+    GameCharacter(int starshipEnergy,int   starshipHP);
+    bool IsPossibleEquipeWeapon(int cost);
 private:
     int  posX;
     int  posY;
+    int  HP;
+    int  energy;
     std::string  name;
     Weapon*  weapon   {nullptr};
 };

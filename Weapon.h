@@ -7,11 +7,11 @@
 
 class Weapon{
 public:
+    int  cost;
     Weapon (int basicWeaponPower);
     Weapon (int   weaponPower,int   weaponCost);
 protected:
     int  power;
-    int  cost;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_WEAPON_H
