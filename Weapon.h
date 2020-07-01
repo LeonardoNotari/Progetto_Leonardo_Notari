@@ -7,11 +7,16 @@
 
 class Weapon{
 public:
-    int  cost;
-    Weapon (int basicWeaponPower);
-    Weapon (int   weaponPower,int   weaponCost);
+    explicit   Weapon   (int   basicWeaponPower);
+    Weapon   (int   weaponPower,int   weaponCost);
+    int   getWeaponCost()   const   ;
+    int   getWeaponX()   const   ;
+    int   getWeaponY()   const   ;
 protected:
-    int  power;
+    int   cost;
+    int   power;
+    int   posX;
+    int   posY;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_WEAPON_H
