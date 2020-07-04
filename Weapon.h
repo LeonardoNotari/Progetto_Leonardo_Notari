@@ -8,7 +8,8 @@
 class Weapon{
 public:
     explicit   Weapon   (int   basicWeaponPower);
-    Weapon   (int   weaponPower,int   weaponCost);
+    Weapon   (int   weaponPower,int   weaponCost,int   weaponX,int   weaponY);
+    virtual   void   Use();
     int   getWeaponCost()   const   ;
     int   getWeaponX()   const   ;
     int   getWeaponY()   const   ;

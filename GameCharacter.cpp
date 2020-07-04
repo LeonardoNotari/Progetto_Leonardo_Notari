@@ -14,12 +14,11 @@ bool   GameCharacter::IsPossibleEquipeWeapon(int cost){
         return true;
     } else
         return false;
-};
+}
 
-void   GameCharacter::EquipeWeapon(int cost){
-    if(   this->IsPossibleEquipeWeapon( cost ) ){
-
-    }
+void   GameCharacter::EquipeWeapon(int cost,Weapon* gun){
+    if(   this->IsPossibleEquipeWeapon( cost ) )
+        this->weapon = gun;
 }
 
 int   GameCharacter::getGameCharacterX()   const   {
@@ -28,4 +27,9 @@ int   GameCharacter::getGameCharacterX()   const   {
 
 int   GameCharacter::getGameCharacterY()   const   {
     return   this->posY;
+}
+
+void   GameCharacter::move(int   x,int   y){
+    posX += x;
+    posY += y;
 }

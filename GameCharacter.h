@@ -11,10 +11,11 @@
 class GameCharacter{
 public:
     GameCharacter(int starshipEnergy,int   starshipHP);
-    bool   IsPossibleEquipeWeapon(int cost);
-    void   EquipeWeapon(int cost);
+    bool   IsPossibleEquipeWeapon(int   cost);
+    void   EquipeWeapon(int   cost,Weapon*   weapon);
     int   getGameCharacterX()   const   ;
     int   getGameCharacterY()   const   ;
+    void   move(int   x,int   y);
 private:
     int   posX;
     int   posY;
