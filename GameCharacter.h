@@ -10,20 +10,20 @@
 
 class GameCharacter{
 public:
-    GameCharacter(int starshipEnergy,int   starshipHP);
-    bool   IsPossibleEquipeWeapon(int   cost);
-    void   EquipeWeapon(int   cost,Weapon*   weapon);
+    Weapon*  weapon   {nullptr};
+    GameCharacter(int spaceshipEnergy,int   spaceshipHP);
+    bool   IsPossibleEquipWeapon(int   cost);
+    void   EquipWeapon(int   cost,Weapon*   weapon);
     int   getGameCharacterX()   const   ;
     int   getGameCharacterY()   const   ;
     void   move(int   x,int   y);
-private:
+protected:
     int   posX;
     int   posY;
     int   HP;
     int   energy;
     int   freeEnergy;
     std::string   name;
-    Weapon*  weapon   {nullptr};
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

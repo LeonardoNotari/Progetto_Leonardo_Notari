@@ -29,6 +29,7 @@ GameEvent getEvent() {
                 return GameEvent::noop;
         }
     }
+    return GameEvent::noop;
 }
 
 bool updateGame(const GameEvent &gameEvent, GameCharacter &player,   Weapon &gun) {
@@ -65,11 +66,11 @@ bool updateGame(const GameEvent &gameEvent, GameCharacter &player,   Weapon &gun
 
 
 int main() {
-    int basicWeaponPower=0,  starshipEnergy=0,   starshipHP=0;
+    int basicWeaponPower=0,  spaceshipEnergy=0,   spaceshipHP=0;
     int gameCharacterX,  gameCharacterY,  weaponX=0,  weaponY=0,   weaponCost=0,   weaponPower=0;
-    GameCharacter player(starshipEnergy,   starshipHP);//istanza personaggio
+    GameCharacter player(spaceshipEnergy,   spaceshipHP);//istanza personaggio
     Weapon baseGun(basicWeaponPower);//istanza arma di base
-    player.EquipeWeapon(1,&baseGun);
+    player.EquipWeapon(1,&baseGun);
 
 
     Weapon gun(weaponPower,weaponCost,weaponX,weaponY);//istanza di un' arma non base
@@ -83,7 +84,7 @@ int main() {
         gameCharacterX=player.getGameCharacterX();
         gameCharacterY=player.getGameCharacterY();
         if(   weaponX == gameCharacterX  &&  weaponY == gameCharacterY   ){
-            player.EquipeWeapon(weaponCost,&gun);
+            player.EquipWeapon(weaponCost,&gun);
         }
         if (quit)
             return 0;

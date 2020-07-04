@@ -8,7 +8,7 @@
 GameCharacter::GameCharacter(int starshipEnergy,int   starshipHP) :  posX(0),  posY(0),  energy(starshipEnergy),   freeEnergy(starshipEnergy),  HP(starshipHP)  {}
 
 
-bool   GameCharacter::IsPossibleEquipeWeapon(int cost){
+bool   GameCharacter::IsPossibleEquipWeapon(int cost){
     if(   cost   <=   freeEnergy  ){
         freeEnergy -=cost;
         return true;
@@ -16,8 +16,8 @@ bool   GameCharacter::IsPossibleEquipeWeapon(int cost){
         return false;
 }
 
-void   GameCharacter::EquipeWeapon(int cost,Weapon* gun){
-    if(   this->IsPossibleEquipeWeapon( cost ) )
+void   GameCharacter::EquipWeapon(int cost,Weapon* gun){
+    if(   this->IsPossibleEquipWeapon( cost ) )
         this->weapon = gun;
 }
 
@@ -33,3 +33,5 @@ void   GameCharacter::move(int   x,int   y){
     posX += x;
     posY += y;
 }
+
+
