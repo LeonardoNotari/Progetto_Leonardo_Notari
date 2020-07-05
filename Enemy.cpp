@@ -5,16 +5,5 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy():   hp(),   damage(),   posX(),   posY()  {}
+Enemy::Enemy(int enemyX, int enemyY) : posX(enemyX), posY(enemyY) {}
 
-void   Enemy::Move(){
-
-}
-
-void   Enemy::Attack() {
-
-}
-
-void   Enemy::ReceiveDamage(){
-
-}

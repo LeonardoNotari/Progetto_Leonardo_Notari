@@ -4,22 +4,23 @@
 
 #include "Weapon.h"
 
-Weapon::Weapon(int   basicWeaponPower):   power(basicWeaponPower),  cost(0){}
+Weapon::Weapon(int basicWeaponPower) : power(basicWeaponPower), cost(0) {}
 
-Weapon::Weapon(int   weaponPower,int   weaponCost,int   weaponX,int   weaponY):   power(weaponPower),   cost(weaponCost),   posX(weaponX),   posY(weaponY){}
+Weapon::Weapon(int weaponPower, int weaponCost, int weaponX, int weaponY) : power(weaponPower), cost(weaponCost),
+                                                                            posX(weaponX), posY(weaponY) {}
 
-int   Weapon::getWeaponCost()   const   {
-    return   this->cost;
+int Weapon::getWeaponCost() const {
+    return this->cost;
 }
 
-int   Weapon::getWeaponX()   const   {
-    return   this->posX;
+int Weapon::getWeaponX() const {
+    return this->posX;
 }
 
-int   Weapon::getWeaponY()   const   {
-    return   this->posY;
+int Weapon::getWeaponY() const {
+    return this->posY;
 }
 
-void   Weapon::Use(){
+void Weapon::Use() {
 
 }

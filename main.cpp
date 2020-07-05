@@ -1,7 +1,9 @@
 #include <iostream>
 #include "GameCharacter.h"
+#include "Weapon.h"
+#include "Enemy.h"
+#include "KamikazeEnemy.h"
 
-Weapon builtWeapon();
 
 enum class GameEvent {
     quit, left, up, down, right, fire, noop
@@ -32,25 +34,25 @@ GameEvent getEvent() {
     return GameEvent::noop;
 }
 
-bool updateGame(const GameEvent &gameEvent, GameCharacter &player,   Weapon &gun) {
+bool updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon &gun) {
     switch (gameEvent) {
         case GameEvent::quit:
             return true;
 
         case GameEvent::up: {
-            player.move(0,1);
+            player.move(0, 1);
             break;
         }
         case GameEvent::left: {
-            player.move(-1,0);
+            player.move(-1, 0);
             break;
         }
         case GameEvent::down: {
-            player.move(0,-1);
+            player.move(0, -1);
             break;
         }
         case GameEvent::right: {
-            player.move(1,0);
+            player.move(1, 0);
             break;
         }
         case GameEvent::fire: {
@@ -66,34 +68,34 @@ bool updateGame(const GameEvent &gameEvent, GameCharacter &player,   Weapon &gun
 
 
 int main() {
-    int basicWeaponPower=0,  spaceshipEnergy=0,   spaceshipHP=0;
-    int gameCharacterX,  gameCharacterY,  weaponX=0,  weaponY=0,   weaponCost=0,   weaponPower=0;
-    GameCharacter player(spaceshipEnergy,   spaceshipHP);//istanza personaggio
+
+    int gameCharacterX = 0, gameCharacterY = 0, weaponX = 0, spaceshipEnergy = 0, spaceshipHP = 0;//variabili gamecharacter
+
+    int weaponY = 0, weaponCost = 0, weaponPower = 0, basicWeaponPower = 0;//variabili weapon
+
+    int enemyX = 0, enemyY = 0;//variabili enemy
+
+    GameCharacter player(spaceshipEnergy, spaceshipHP);//istanza personaggio
     Weapon baseGun(basicWeaponPower);//istanza arma di base
-    player.EquipWeapon(1,&baseGun);
+    player.EquipWeapon(1, &baseGun);
 
+    Weapon gun(weaponPower, weaponCost, weaponX, weaponY);//istanza di un' arma non base
+    weaponY = gun.getWeaponY();
+    weaponX = gun.getWeaponX();
 
-    Weapon gun(weaponPower,weaponCost,weaponX,weaponY);//istanza di un' arma non base
-    weaponY=gun.getWeaponY();
-    weaponX=gun.getWeaponX();
-
+    KamikazeEnemy alien(enemyX, enemyY);//istanza enemy di tipo kamikaze
 
     while (true) {
         GameEvent gameEvent = getEvent();
-        bool quit = updateGame(  gameEvent,   player,   gun  );
-        gameCharacterX=player.getGameCharacterX();
-        gameCharacterY=player.getGameCharacterY();
-        if(   weaponX == gameCharacterX  &&  weaponY == gameCharacterY   ){
-            player.EquipWeapon(weaponCost,&gun);
+        bool quit = updateGame(gameEvent, player, gun);//mossa giocatore
+        gameCharacterX = player.getGameCharacterX();
+        gameCharacterY = player.getGameCharacterY();
+        alien.Move(gameCharacterX, gameCharacterY);//movimento del nemico
+        player.ReceiveDamage(alien.Attack(gameCharacterX, gameCharacterY));//attacco nemico
+        if (weaponX == gameCharacterX && weaponY == gameCharacterY) {
+            player.EquipWeapon(weaponCost, &gun);
         }
         if (quit)
             return 0;
     }
-}
-
-
-Weapon builtWeapon(){
-    int weaponX=0,  weaponY=0,   weaponCost=1,   weaponPower=0;
-    Weapon gun(weaponPower,weaponCost,weaponX,weaponY);//istanza di un' arma non base
-    return gun;
 }

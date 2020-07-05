@@ -40,18 +40,35 @@
 
 #include "gtest/gtest.h"
 
-TEST(FooTest, Test1) {}
+TEST(FooTest, Test1
+) {
+}
 
-TEST(FooTest, Test2) {}
+TEST(FooTest, Test2
+) {
+}
 
-class FooTestFixture : public ::testing::Test {};
-TEST_F(FooTestFixture, Test3) {}
-TEST_F(FooTestFixture, Test4) {}
+class FooTestFixture : public ::testing::Test {
+};
 
-class ValueParamTest : public ::testing::TestWithParam<int> {};
-TEST_P(ValueParamTest, Test5) {}
-TEST_P(ValueParamTest, Test6) {}
-INSTANTIATE_TEST_SUITE_P(ValueParam, ValueParamTest, ::testing::Values(33, 42));
+TEST_F(FooTestFixture, Test3
+) {
+}
+TEST_F(FooTestFixture, Test4
+) {
+}
+
+class ValueParamTest : public ::testing::TestWithParam<int> {
+};
+
+TEST_P(ValueParamTest, Test5
+) {
+}
+TEST_P(ValueParamTest, Test6
+) {
+}
+INSTANTIATE_TEST_SUITE_P(ValueParam, ValueParamTest, ::testing::Values(33, 42)
+);
 
 #if GTEST_HAS_TYPED_TEST
 template <typename T>
@@ -75,7 +92,7 @@ INSTANTIATE_TYPED_TEST_SUITE_P(Single, TypeParameterizedTestSuite,
 #endif
 
 int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
+    ::testing::InitGoogleTest(&argc, argv);
 
-  return RUN_ALL_TESTS();
+    return RUN_ALL_TESTS();
 }

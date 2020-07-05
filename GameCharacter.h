@@ -8,22 +8,33 @@
 #include <iostream>
 #include "Weapon.h"
 
-class GameCharacter{
+class GameCharacter {
 public:
-    Weapon*  weapon   {nullptr};
-    GameCharacter(int spaceshipEnergy,int   spaceshipHP);
-    bool   IsPossibleEquipWeapon(int   cost);
-    void   EquipWeapon(int   cost,Weapon*   weapon);
-    int   getGameCharacterX()   const   ;
-    int   getGameCharacterY()   const   ;
-    void   move(int   x,int   y);
+    Weapon *weapon{nullptr};
+
+    GameCharacter(int spaceshipEnergy, int spaceshipHP);
+
+    bool IsPossibleEquipWeapon(int cost);
+
+    void EquipWeapon(int cost, Weapon *weapon);
+
+    int getGameCharacterX() const;
+
+    int getGameCharacterY() const;
+
+    void move(int x, int y);
+
+    void ReceiveDamage(int damage);
+
+    int getGameCharacterHP() const;
+
 protected:
-    int   posX;
-    int   posY;
-    int   HP;
-    int   energy;
-    int   freeEnergy;
-    std::string   name;
+    int posX;
+    int posY;
+    int HP;
+    int energy;
+    int freeEnergy;
+    std::string name;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

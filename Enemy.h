@@ -8,16 +8,15 @@
 
 class Enemy {
 public:
-    Enemy();
-    void   Move();
-    void   Attack();
-    void   ReceiveDamage();
-private:
-    int   posX;
-    int   posY;
-    int   hp;
-    int   damage;
+    Enemy(int enemyX, int enemyY);
 
+    virtual void Move(int gamecharacterX, int gamecharacterY) = 0;
+
+    virtual int Attack(int gamecharacterX, int gamecharacterY) = 0;
+
+protected:
+    int posX;
+    int posY;
 };
 
 
