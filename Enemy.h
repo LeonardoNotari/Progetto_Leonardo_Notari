@@ -8,7 +8,7 @@
 
 class Enemy {
 public:
-    Enemy(int enemyX, int enemyY);
+    Enemy(int enemyX, int enemyY,int  enemyPower);
 
     virtual void Move(int gamecharacterX, int gamecharacterY) = 0;
 
@@ -17,6 +17,7 @@ public:
 protected:
     int posX;
     int posY;
+    int damage;
 };
 
 

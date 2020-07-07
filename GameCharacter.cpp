@@ -22,6 +22,10 @@ void GameCharacter::EquipWeapon(int cost, Weapon *gun) {
         this->weapon = gun;
 }
 
+Weapon* GameCharacter::getWeapon()const {
+    return this->weapon;
+}
+
 int GameCharacter::getGameCharacterX() const {
     return this->posX;
 }

@@ -12,18 +12,20 @@ TEST(GameCharacter, IsPossibleEquipWeapon) {
 }
 
 TEST(GameCharacter, EquipWeapon) {
+    Weapon*weapon;
     GameCharacter player(8, 10);
-    Weapon gun(10, 5, 0, 0);
+    Weapon gun(9, 5, 0, 0);
     player.EquipWeapon(6, &gun);
-    ASSERT_EQ(10, player.weapon->power);
+    weapon=player.getWeapon();
+    ASSERT_EQ(9, weapon->power);
 }
 
 TEST(GameCharacter, ReceivedDamage) {
     int hp;
-    GameCharacter player(5, 10);
-    KamikazeEnemy alien(1, 0);
-    player.ReceiveDamage(alien.Attack(0, 0));
+    GameCharacter player(0, 10);
+    KamikazeEnemy alien(1, 0,9);
+    player.ReceiveDamage(alien.Attack(1, 0));
     hp = player.getGameCharacterHP();
-    ASSERT_EQ(10, hp);
+    ASSERT_EQ(1, hp);
 }
 

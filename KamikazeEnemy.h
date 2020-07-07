@@ -10,16 +10,12 @@
 
 class KamikazeEnemy : virtual public Enemy {
 public:
-    KamikazeEnemy(int enemyX, int enemyY);
+    KamikazeEnemy(int enemyX,int enemyY, int enemyPower);
 
     void Move(int gamecharacterX, int gamecharacterY) override;
 
     int Attack(int gamecharacterX, int gamecharacterY) override;
 
-private:
-    int posX;
-    int posY;
-    int damage{7};
 };
 
 

@@ -18,6 +18,8 @@ public:
 
     void EquipWeapon(int cost, Weapon *weapon);
 
+    Weapon* getWeapon()const;
+
     int getGameCharacterX() const;
 
     int getGameCharacterY() const;

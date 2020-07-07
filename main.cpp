@@ -1,7 +1,6 @@
 #include <iostream>
 #include "GameCharacter.h"
 #include "Weapon.h"
-#include "Enemy.h"
 #include "KamikazeEnemy.h"
 
 
@@ -66,14 +65,13 @@ bool updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon &gun) 
     return false;
 }
 
-
 int main() {
 
-    int gameCharacterX = 0, gameCharacterY = 0, weaponX = 0, spaceshipEnergy = 0, spaceshipHP = 0;//variabili gamecharacter
+    int gameCharacterX , gameCharacterY , weaponX = 0, spaceshipEnergy = 0, spaceshipHP = 0;//variabili gamecharacter
 
     int weaponY = 0, weaponCost = 0, weaponPower = 0, basicWeaponPower = 0;//variabili weapon
 
-    int enemyX = 0, enemyY = 0;//variabili enemy
+    int enemyX = 0, enemyY = 0, enemyPower=4;//variabili enemy
 
     GameCharacter player(spaceshipEnergy, spaceshipHP);//istanza personaggio
     Weapon baseGun(basicWeaponPower);//istanza arma di base
@@ -83,7 +81,7 @@ int main() {
     weaponY = gun.getWeaponY();
     weaponX = gun.getWeaponX();
 
-    KamikazeEnemy alien(enemyX, enemyY);//istanza enemy di tipo kamikaze
+    KamikazeEnemy alien(enemyX, enemyY, enemyPower);//istanza enemy di tipo kamikaze
 
     while (true) {
         GameEvent gameEvent = getEvent();

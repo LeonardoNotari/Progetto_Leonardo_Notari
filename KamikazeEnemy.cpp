@@ -3,7 +3,7 @@
 //
 #include "KamikazeEnemy.h"
 
-KamikazeEnemy::KamikazeEnemy(int enemyX, int enemyY) : Enemy(enemyX, enemyY), posX(enemyX), posY(enemyY) {}
+KamikazeEnemy::KamikazeEnemy(int enemyX,int enemyY, int enemyPower) : Enemy(enemyX, enemyY, enemyPower){}
 
 void KamikazeEnemy::Move(int gamecharacterX, int gamecharacterY) {
     if (posX < gamecharacterX)

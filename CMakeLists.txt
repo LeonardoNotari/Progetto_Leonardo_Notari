@@ -3,7 +3,7 @@ project(Progetto_Leonardo_Notari)
 
 set(CMAKE_CXX_STANDARD 14)
 add_subdirectory(test)
-set(SOURCE_FILE main.cpp GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h)
+set(SOURCE_FILE main.cpp GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h CommonEnemy.cpp CommonEnemy.h)
 
 find_package(wxWidgets REQUIRED net gl core base)
 include(${wxWidgets_USE_FILE})

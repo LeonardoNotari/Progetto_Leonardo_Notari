@@ -5,5 +5,5 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(int enemyX, int enemyY) : posX(enemyX), posY(enemyY) {}
+Enemy::Enemy(int enemyX, int enemyY,int enemyPower) : posX(enemyX), posY(enemyY), damage(enemyPower) {}
 
