@@ -10,7 +10,6 @@
 
 class GameCharacter {
 public:
-    Weapon *weapon{nullptr};
 
     GameCharacter(int spaceshipEnergy, int spaceshipHP);
 
@@ -31,6 +30,7 @@ public:
     int getGameCharacterHP() const;
 
 protected:
+    Weapon *weapon{nullptr};
     int posX;
     int posY;
     int HP;

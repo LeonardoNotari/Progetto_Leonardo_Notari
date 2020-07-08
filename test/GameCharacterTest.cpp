@@ -20,6 +20,17 @@ TEST(GameCharacter, EquipWeapon) {
     ASSERT_EQ(9, weapon->power);
 }
 
+TEST(GameCharacter, Move) {
+    int X,Y;
+    GameCharacter player(8, 10);
+    player.move(0,1);
+    player.move(1,0);
+    X=player.getGameCharacterX();
+    Y=player.getGameCharacterY();
+    ASSERT_EQ(1,X);
+    ASSERT_EQ(1,Y);
+}
+
 TEST(GameCharacter, ReceivedDamage) {
     int hp;
     GameCharacter player(0, 10);
