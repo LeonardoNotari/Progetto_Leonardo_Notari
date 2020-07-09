@@ -14,6 +14,10 @@ public:
 
     virtual int Attack(int gamecharacterX, int gamecharacterY) = 0;
 
+    int getEnemyX()const;
+
+    int getEnemyY()const;
+
 protected:
     int posX;
     int posY;

@@ -4,6 +4,7 @@
 #include "KamikazeEnemy.h"
 
 
+
 enum class GameEvent {
     quit, left, up, down, right, fire, noop
 };
@@ -12,7 +13,7 @@ enum class GameEvent {
 GameEvent getEvent() {
     char c;
     while (std::cin.get(c)) {
-        std::cin.ignore(100, '\n');
+        std::cin.ignore(0, '\n');
         switch (c) {
             case 'Q':
                 return GameEvent::quit;
@@ -65,11 +66,27 @@ bool updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon &gun) 
     return false;
 }
 
+void GameControl(GameCharacter& player,Weapon& gun,Enemy& alien){//controllo delle posizioni
+    int gameCharacterX,gameCharacterY;
+    int weaponX,weaponY,weaponCost;
+    gameCharacterX = player.getGameCharacterX();
+    gameCharacterY = player.getGameCharacterY();
+    weaponY = gun.getWeaponY();
+    weaponX = gun.getWeaponX();
+    weaponCost=gun.getWeaponCost();
+    alien.Move(gameCharacterX, gameCharacterY);//movimento del nemico
+    player.ReceiveDamage(alien.Attack(gameCharacterX, gameCharacterY));//attacco nemico
+    if (weaponX == gameCharacterX && weaponY == gameCharacterY) {//equipaggiamento arma se nella stessa posizione del GameCharacter
+        player.EquipWeapon(weaponCost, &gun);
+    }
+}
+
+
 int main() {
 
-    int gameCharacterX , gameCharacterY , weaponX = 0, spaceshipEnergy = 0, spaceshipHP = 0;//variabili gamecharacter
+    int spaceshipEnergy = 0, spaceshipHP = 0;//variabili gamecharacter
 
-    int weaponY = 0, weaponCost = 0, weaponPower = 0, basicWeaponPower = 0;//variabili weapon
+    int weaponY = 0,weaponX=0, weaponCost = 0, weaponPower = 0, basicWeaponPower = 0;//variabili weapon
 
     int enemyX = 0, enemyY = 0, enemyPower=4;//variabili enemy
 
@@ -78,21 +95,13 @@ int main() {
     player.EquipWeapon(1, &baseGun);
 
     Weapon gun(weaponPower, weaponCost, weaponX, weaponY);//istanza di un' arma non base
-    weaponY = gun.getWeaponY();
-    weaponX = gun.getWeaponX();
 
     KamikazeEnemy alien(enemyX, enemyY, enemyPower);//istanza enemy di tipo kamikaze
 
     while (true) {
         GameEvent gameEvent = getEvent();
         bool quit = updateGame(gameEvent, player, gun);//mossa giocatore
-        gameCharacterX = player.getGameCharacterX();
-        gameCharacterY = player.getGameCharacterY();
-        alien.Move(gameCharacterX, gameCharacterY);//movimento del nemico
-        player.ReceiveDamage(alien.Attack(gameCharacterX, gameCharacterY));//attacco nemico
-        if (weaponX == gameCharacterX && weaponY == gameCharacterY) {
-            player.EquipWeapon(weaponCost, &gun);
-        }
+        GameControl(player,gun,alien);
         if (quit)
             return 0;
     }
