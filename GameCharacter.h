@@ -13,11 +13,11 @@ public:
 
     GameCharacter(int spaceshipEnergy, int spaceshipHP);
 
-    bool IsPossibleEquipWeapon(int cost);
+    bool isPossibleEquipWeapon(int cost);
 
-    void EquipWeapon(int cost, Weapon *weapon);
+    void equipWeapon(int cost, Weapon *weapon);
 
-    Weapon* getWeapon()const;
+    Weapon *getWeapon() const;
 
     int getGameCharacterX() const;
 
@@ -25,7 +25,7 @@ public:
 
     void move(int x, int y);
 
-    void ReceiveDamage(int damage);
+    void receiveDamage(int damage);
 
     int getGameCharacterHP() const;
 

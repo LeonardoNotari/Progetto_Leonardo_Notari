@@ -3,9 +3,9 @@
 //
 #include "KamikazeEnemy.h"
 
-KamikazeEnemy::KamikazeEnemy(int enemyX,int enemyY, int enemyPower) : Enemy(enemyX, enemyY, enemyPower){}
+KamikazeEnemy::KamikazeEnemy(int enemyX, int enemyY, int enemyPower) : Enemy(enemyX, enemyY, enemyPower) {}
 
-void KamikazeEnemy::Move(int gamecharacterX, int gamecharacterY) {
+void KamikazeEnemy::move(int gamecharacterX, int gamecharacterY) {
     if (posX < gamecharacterX)
         posX++;
     else
@@ -16,7 +16,7 @@ void KamikazeEnemy::Move(int gamecharacterX, int gamecharacterY) {
         posY--;
 }
 
-int KamikazeEnemy::Attack(int gamecharacterX, int gamecharacterY) {
+int KamikazeEnemy::attack(int gamecharacterX, int gamecharacterY) {
     if (posX == gamecharacterX && posY == gamecharacterY)
         return damage;
     else

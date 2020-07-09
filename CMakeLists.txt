@@ -13,4 +13,9 @@ add_library(core ${SOURCE_FILE})
 target_link_libraries(Progetto_Leonardo_Notari core)
 
 
+set(CURSES_NEED_NCURSES, TRUE)
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIRS})
+target_link_libraries(Progetto_Leonardo_Notari ${CURSES_LIBRARIES})
+
 target_link_libraries(Progetto_Leonardo_Notari ${wxWidgets_LIBRARIES})

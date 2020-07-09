@@ -5,11 +5,11 @@
 #include "GameCharacter.h"
 #include "Weapon.h"
 
+
 GameCharacter::GameCharacter(int spaceshipEnergy, int spaceshipHP) : posX(0), posY(0), energy(spaceshipEnergy),
                                                                      freeEnergy(spaceshipEnergy), HP(spaceshipHP) {}
 
-
-bool GameCharacter::IsPossibleEquipWeapon(int cost) {
+bool GameCharacter::isPossibleEquipWeapon(int cost) {
     if (cost <= freeEnergy) {
         freeEnergy -= cost;
         return true;
@@ -17,12 +17,12 @@ bool GameCharacter::IsPossibleEquipWeapon(int cost) {
         return false;
 }
 
-void GameCharacter::EquipWeapon(int cost, Weapon *gun) {
-    if (this->IsPossibleEquipWeapon(cost))
+void GameCharacter::equipWeapon(int cost, Weapon *gun) {
+    if (this->isPossibleEquipWeapon(cost))
         this->weapon = gun;
 }
 
-Weapon* GameCharacter::getWeapon()const {
+Weapon *GameCharacter::getWeapon() const {
     return this->weapon;
 }
 
@@ -39,7 +39,7 @@ void GameCharacter::move(int x, int y) {
     posY += y;
 }
 
-void GameCharacter::ReceiveDamage(int damage) {
+void GameCharacter::receiveDamage(int damage) {
     this->HP -= damage;
 }
 

@@ -8,15 +8,15 @@
 
 class Enemy {
 public:
-    Enemy(int enemyX, int enemyY,int  enemyPower);
+    Enemy(int enemyX, int enemyY, int enemyPower);
 
-    virtual void Move(int gamecharacterX, int gamecharacterY) = 0;
+    virtual void move(int gamecharacterX, int gamecharacterY) = 0;
 
-    virtual int Attack(int gamecharacterX, int gamecharacterY) = 0;
+    virtual int attack(int gamecharacterX, int gamecharacterY) = 0;
 
-    int getEnemyX()const;
+    int getEnemyX() const;
 
-    int getEnemyY()const;
+    int getEnemyY() const;
 
 protected:
     int posX;
