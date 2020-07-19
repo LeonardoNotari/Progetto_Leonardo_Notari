@@ -3,17 +3,30 @@
 //
 
 #include "CommonEnemy.h"
+#include "GameCharacter.h"
 
-CommonEnemy::CommonEnemy(int enemyX, int enemyY, int enemyPower) : Enemy(enemyX, enemyY, enemyPower) {}
 
-void CommonEnemy::move(int gamecharacterX, int gamecharacterY) {
-    if (posX < gamecharacterX - 4)
-        posX++;
-    if (posX > gamecharacterX + 4)
-        posX--;
+CommonEnemy::CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed) : Enemy(enemyX, enemyY,
+                                                                                               enemyPower,
+                                                                                               enemySpeed) {}
+
+void CommonEnemy::move(float gamecharacterX, float gamecharacterY) {
+    if (posX < gamecharacterX-200 || (posX>gamecharacterX&&posX<gamecharacterX+200)) {
+        posX += speed;
+    }
+    if (posX > gamecharacterX+200 || (posX<gamecharacterX&&posX>gamecharacterX-200)) {
+        posX -= speed;
+    }
     if (posY < gamecharacterY)
-        posX++;
+        posY+=speed;
     if (posY > gamecharacterY)
-        posX--;
+        posY-=speed;
+}
+
+bool CommonEnemy::attack(GameCharacter &player) {
+
+    if (posY == player.getGameCharacterY())
+        damage = 0;
+    return true;
 }
 

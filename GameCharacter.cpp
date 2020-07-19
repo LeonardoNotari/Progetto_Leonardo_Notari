@@ -26,15 +26,15 @@ Weapon *GameCharacter::getWeapon() const {
     return this->weapon;
 }
 
-int GameCharacter::getGameCharacterX() const {
+float GameCharacter::getGameCharacterX() const {
     return this->posX;
 }
 
-int GameCharacter::getGameCharacterY() const {
+float GameCharacter::getGameCharacterY() const {
     return this->posY;
 }
 
-void GameCharacter::move(int x, int y) {
+void GameCharacter::move(float x, float y) {
     posX += x;
     posY += y;
 }

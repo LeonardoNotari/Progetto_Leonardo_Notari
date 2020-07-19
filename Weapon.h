@@ -7,24 +7,27 @@
 
 class Weapon {
 public:
-    int power;
+    int spriteCode;
 
     explicit Weapon(int basicWeaponPower);
 
-    Weapon(int weaponPower, int weaponCost, int weaponX, int weaponY);
+    Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY);
 
-    virtual void Use();
+    virtual void use();
 
     int getWeaponCost() const;
 
-    int getWeaponX() const;
+    float getWeaponX() const;
 
-    int getWeaponY() const;
+    float getWeaponY() const;
+
+    int getWeaponPower() const;
 
 protected:
+    int power;
     int cost;
-    int posX;
-    int posY;
+    float posX;
+    float posY;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_WEAPON_H

@@ -2,23 +2,28 @@
 // Created by leonardo on 04/07/20.
 //
 #include "KamikazeEnemy.h"
+#include "GameCharacter.h"
 
-KamikazeEnemy::KamikazeEnemy(int enemyX, int enemyY, int enemyPower) : Enemy(enemyX, enemyY, enemyPower) {}
+KamikazeEnemy::KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed) : Enemy(enemyX, enemyY,
+                                                                                                   enemyPower,
+                                                                                                   enemySpeed) {}
 
-void KamikazeEnemy::move(int gamecharacterX, int gamecharacterY) {
+void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX)
-        posX++;
+        posX += speed;
     else
-        posX--;
-    if (posY < gamecharacterX)
-        posY++;
+        posX -= speed;
+    if (posY < gamecharacterY)
+        posY += speed;
     else
-        posY--;
+        posY -= speed;
 }
 
-int KamikazeEnemy::attack(int gamecharacterX, int gamecharacterY) {
-    if (posX == gamecharacterX && posY == gamecharacterY)
-        return damage;
-    else
-        return 0;
+bool KamikazeEnemy::attack(GameCharacter &player) {
+    if (posX > player.getGameCharacterX() - 1 && posX < player.getGameCharacterY() - 1 &&
+        posY > player.getGameCharacterX() - 1 && posY < player.getGameCharacterY() - 1) {
+        player.receiveDamage(damage);
+        return true;
+    }
+    return false;
 }

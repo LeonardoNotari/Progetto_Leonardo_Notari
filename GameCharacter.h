@@ -19,11 +19,11 @@ public:
 
     Weapon *getWeapon() const;
 
-    int getGameCharacterX() const;
+    float getGameCharacterX() const;
 
-    int getGameCharacterY() const;
+    float getGameCharacterY() const;
 
-    void move(int x, int y);
+    void move(float x, float y);
 
     void receiveDamage(int damage);
 
@@ -31,8 +31,8 @@ public:
 
 protected:
     Weapon *weapon{nullptr};
-    int posX;
-    int posY;
+    float posX;
+    float posY;
     int HP;
     int energy;
     int freeEnergy;

@@ -5,23 +5,34 @@
 #ifndef PROGETTO_LEONARDO_NOTARI_ENEMY_H
 #define PROGETTO_LEONARDO_NOTARI_ENEMY_H
 
+#include "GameCharacter.h"
 
 class Enemy {
 public:
-    Enemy(int enemyX, int enemyY, int enemyPower);
+    int spriteCode;
 
-    virtual void move(int gamecharacterX, int gamecharacterY) = 0;
+    Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed);
 
-    virtual int attack(int gamecharacterX, int gamecharacterY) = 0;
+    virtual~Enemy();
 
-    int getEnemyX() const;
+    virtual void move(float gamecharacterX, float gamecharacterY) = 0;
 
-    int getEnemyY() const;
+    virtual bool attack(GameCharacter &player) = 0;
+
+    void receiveDamage(int damage);
+
+    float getEnemyX() const;
+
+    float getEnemyY() const;
+
+    int getEnemyHP() const;
 
 protected:
-    int posX;
-    int posY;
+    int hp = 100;
+    float posX;
+    float posY;
     int damage;
+    float speed;
 };
 
 

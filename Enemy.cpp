@@ -5,12 +5,25 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(int enemyX, int enemyY, int enemyPower) : posX(enemyX), posY(enemyY), damage(enemyPower) {}
+Enemy::Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed) : posX(enemyX), posY(enemyY),
+                                                                             damage(enemyPower), speed(enemySpeed) {}
 
-int Enemy::getEnemyX() const {
+Enemy::~Enemy() {
+    delete this;
+}
+
+float Enemy::getEnemyX() const {
     return this->posX;
 }
 
-int Enemy::getEnemyY() const {
+float Enemy::getEnemyY() const {
     return this->posY;
+}
+
+int Enemy::getEnemyHP() const {
+    return this->hp;
+}
+
+void Enemy::receiveDamage(int enemyDamage) {
+    this->hp -= enemyDamage;
 }

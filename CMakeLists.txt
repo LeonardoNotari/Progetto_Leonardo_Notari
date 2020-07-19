@@ -1,21 +1,29 @@
-cmake_minimum_required(VERSION 3.15)
-project(Progetto_Leonardo_Notari)
+cmake_minimum_required(VERSION 3.16)
+project(Mischiato)
 
 set(CMAKE_CXX_STANDARD 14)
 add_subdirectory(test)
-set(SOURCE_FILE main.cpp GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h CommonEnemy.cpp CommonEnemy.h)
+set(SFML_INCLUDE_DIR "/home/SFML/SFML-2.5.1/include/SFML")
+set(SFML_LIBRARY_DIR "/home/SFML/SFML-2.5.1/lib")
+set(SFML_DIR "/home/SFML/SFML-2.5.1/lib/cmake/SFML")
+set(CMAKE_VERBOSE_MAKEFILE ON)
+link_directories(SFML_LIBRARY_DIR)
+include_directories(SFML_INCLUDE_DIR)
+find_package(SFML 2.5.1 COMPONENTS system window graphics REQUIRED)
+if (SFML_FOUND)
+    message(STATUS "SFML_INCLUDE_DIR: ${SFML_INCLUDE_DIR}")
+    message(STATUS "SFML_LIBRARIES: ${SFML_LIBRARY_DIR}")
+    message(STATUS "SFML_VERSION: ${SFML_VERSION}")
 
-find_package(wxWidgets REQUIRED net gl core base)
-include(${wxWidgets_USE_FILE})
 
-add_executable(Progetto_Leonardo_Notari main.cpp GameCharacter.cpp GameCharacter.h Weapon.cpp Weapon.h Enemy.cpp Enemy.h)
+endif ()
+
+
+set(SOURCE_FILE main.cpp TileMap.cpp TileMap.h GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h CommonEnemy.cpp CommonEnemy.h bullet.cpp bullet.h)
+
+add_executable(Mischiato main.cpp TileMap.cpp TileMap.h GameCharacter.cpp GameCharacter.h Weapon.cpp Weapon.h Enemy.cpp Enemy.h)
 add_library(core ${SOURCE_FILE})
-target_link_libraries(Progetto_Leonardo_Notari core)
+target_link_libraries(Mischiato core sfml-graphics sfml-window sfml-system)
 
 
-set(CURSES_NEED_NCURSES, TRUE)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIRS})
-target_link_libraries(Progetto_Leonardo_Notari ${CURSES_LIBRARIES})
 
-target_link_libraries(Progetto_Leonardo_Notari ${wxWidgets_LIBRARIES})

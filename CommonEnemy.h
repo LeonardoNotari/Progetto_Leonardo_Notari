@@ -6,12 +6,15 @@
 #define PROGETTO_LEONARDO_NOTARI_COMMONENEMY_H
 
 #include "Enemy.h"
+#include "GameCharacter.h"
 
 class CommonEnemy : public Enemy {
 public:
-    CommonEnemy(int enemyX, int enemyY, int enemyPower);
+    CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed);
 
-    void move(int gamecharacterX, int gamecharacterY) override;
+    void move(float gamecharacterX, float gamecharacterY) override;
+
+    bool attack(GameCharacter &player) override;
 };
 
 

@@ -6,15 +6,16 @@
 #define PROGETTO_LEONARDO_NOTARI_KAMIKAZEENEMY_H
 
 #include "Enemy.h"
+#include "GameCharacter.h"
 
 
 class KamikazeEnemy : virtual public Enemy {
 public:
-    KamikazeEnemy(int enemyX, int enemyY, int enemyPower);
+    KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float speed);
 
-    void move(int gamecharacterX, int gamecharacterY) override;
+    void move(float gamecharacterX, float gamecharacterY) override;
 
-    int attack(int gamecharacterX, int gamecharacterY) override;
+    bool attack(GameCharacter &player) override;
 
 };
 
