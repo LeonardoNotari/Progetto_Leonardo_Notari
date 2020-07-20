@@ -13,7 +13,9 @@
 class bullet {
 public:
     bullet(int power, bool verse, float x, float y);
+
     void move(float increment);
+
     bool bulletVerse;
     float bulletX, bulletY;
     int damage;

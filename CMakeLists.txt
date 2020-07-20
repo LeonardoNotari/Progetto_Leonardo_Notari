@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(Mischiato)
+project(Progetto_Leonardo_Notari_)
 
 set(CMAKE_CXX_STANDARD 14)
 add_subdirectory(test)
@@ -19,11 +19,11 @@ if (SFML_FOUND)
 endif ()
 
 
-set(SOURCE_FILE main.cpp TileMap.cpp TileMap.h GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h CommonEnemy.cpp CommonEnemy.h bullet.cpp bullet.h)
+set(SOURCE_FILE main.cpp TileMap.cpp TileMap.h GameCharacter.h GameCharacter.cpp Weapon.h Weapon.cpp Enemy.cpp Enemy.h KamikazeEnemy.cpp KamikazeEnemy.h CommonEnemy.cpp CommonEnemy.h bullet.cpp bullet.h EnemyFactory.cpp EnemyFactory.h BulletFactory.cpp BulletFactory.h WeaponFactory.cpp WeaponFactory.h)
 
-add_executable(Mischiato main.cpp TileMap.cpp TileMap.h GameCharacter.cpp GameCharacter.h Weapon.cpp Weapon.h Enemy.cpp Enemy.h)
+add_executable(Progetto_Leonardo_Notari_ main.cpp TileMap.cpp TileMap.h GameCharacter.cpp GameCharacter.h Weapon.cpp Weapon.h Enemy.cpp Enemy.h)
 add_library(core ${SOURCE_FILE})
-target_link_libraries(Mischiato core sfml-graphics sfml-window sfml-system)
+target_link_libraries(Progetto_Leonardo_Notari_ core sfml-graphics sfml-window sfml-system)
 
 
 

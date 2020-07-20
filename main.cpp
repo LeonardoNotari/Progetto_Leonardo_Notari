@@ -5,11 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include "GameCharacter.h"
 #include "Weapon.h"
-#include "KamikazeEnemy.h"
-#include "CommonEnemy.h"
 #include "bullet.h"
 #include "TileMap.h"
-
+#include "EnemyFactory.h"
+#include "BulletFactory.h"
+#include "WeaponFactory.h"
 
 enum class GameEvent {
     left, up, down, right, fire, noop
@@ -17,7 +17,7 @@ enum class GameEvent {
 
 
 GameEvent getEvent(int &a) {
-    int fireCadence=a;
+    int fireCadence = a;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         return GameEvent::right;
@@ -28,14 +28,14 @@ GameEvent getEvent(int &a) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         return GameEvent::down;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         return GameEvent::up;
-     }
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-        if(fireCadence==200) {
-            a=0;
+        if (fireCadence == 200) {
+            a = 0;
             return GameEvent::fire;
-        }else {
+        } else {
             a++;
             return GameEvent::noop;
         }
@@ -49,47 +49,8 @@ float generateCasualNumber() {
 }
 
 
-Enemy *createEnemy(float X, float Y, float speed, const sf::Texture &Enemy1,const sf::Texture &Enemy2, std::list<sf::Sprite> &sprites) {//genera nemici
-    Enemy *enemy;
-    sf::Sprite E;
-    if(static_cast<int>(generateCasualNumber()) % 2!=0) {
-        E.setTexture(Enemy1);
-        enemy = new KamikazeEnemy(X, Y, 50, speed);
-    }else{
-        E.setTexture(Enemy2);
-        enemy = new CommonEnemy(X, Y, 50, speed);
-    }
-    E.setPosition(sf::Vector2f(enemy->getEnemyX(), enemy->getEnemyX()));
-    sprites.push_back(E);
-    enemy->spriteCode = sprites.size();
-    return enemy;
-}
-
-
-bullet* createBullet(bool verse, int power, float x, float y,const sf::Texture &Bullet1 ,std::list<sf::Sprite> &sprites) {
-    bullet *bullet;
-    sf::Sprite B;
-    B.setTexture(Bullet1);
-    bullet = new class bullet(power, verse, x, y);
-    B.setPosition(sf::Vector2f(x, y));
-    sprites.push_back(B);
-    bullet->spriteCode= sprites.size();
-    return bullet;
-}
-
-
-Weapon* createWeapon( float x, float y,const sf::Texture &weaponTexture ,std::list<sf::Sprite> &sprites) {
-    Weapon *weapon;
-    sf::Sprite W;
-    W.setTexture(weaponTexture);
-    weapon = new Weapon(0, 0,x,y);
-    W.setPosition(sf::Vector2f(x, y));
-    sprites.push_back(W);
-    weapon->spriteCode= sprites.size();
-    return weapon;
-}
-
-void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, bool &verse,const sf::Texture &Bullet1 ,std::list<sf::Sprite> &sprites,std::list<bullet*> &bullets) {
+void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, BulletFactory factory, bool &verse,
+                const sf::Texture &bulletTexture, std::list<sf::Sprite> &sprites, std::list<bullet *> &bullets) {
     switch (gameEvent) {
         case GameEvent::up: {
             player.move(0, -0.1);
@@ -110,7 +71,8 @@ void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, 
             break;
         }
         case GameEvent::fire: {
-            bullets.push_back(createBullet(verse,0,player.getGameCharacterX(),player.getGameCharacterY(),Bullet1,sprites));
+            bullets.push_back(factory.createBullet(BulletType::Common, verse, bulletTexture, player.getGameCharacterX(),
+                                                   player.getGameCharacterY(), sprites));
             break;
         }
         case GameEvent::noop: {
@@ -131,33 +93,34 @@ void enemyControl(GameCharacter &player, std::list<Weapon *> &weapons,
 }
 
 
-void bulletMovement(GameCharacter &player, bullet* bullet,sf::Sprite &sprite,bool &lifeOver,std::list<Enemy*> &enemies) {
-        if (bullet->bulletVerse)
-            bullet->move(1);
-        else
-            bullet->move(-1);
-        sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
-        /*if (player.getGameCharacterY() == bullet->bulletX && player.getGameCharacterX() == bullet->bulletY)
-            player.receiveDamage(bullet->damage);
-        auto it=enemies.begin();
-        for (auto enemy:enemies) {
-            if (enemy->getEnemyY() >= bullet->bulletY-0.05 && enemy->getEnemyY() <= bullet->bulletY+0.5 && enemy->getEnemyX() >= bullet->bulletX-0.5 && enemy->getEnemyX() <= bullet->bulletX+0.05 ) {
-                // enemy->receiveDamage(bullet->damage);
-                *it=enemy;
-            }
+void
+bulletMovement(GameCharacter &player, bullet *bullet, sf::Sprite &sprite, bool &lifeOver, std::list<Enemy *> &enemies) {
+    if (bullet->bulletVerse)
+        bullet->move(1);
+    else
+        bullet->move(-1);
+    sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
+    /*if (player.getGameCharacterY() == bullet->bulletX && player.getGameCharacterX() == bullet->bulletY)
+        player.receiveDamage(bullet->damage);
+    auto it=enemies.begin();
+    for (auto enemy:enemies) {
+        if (enemy->getEnemyY() >= bullet->bulletY-0.05 && enemy->getEnemyY() <= bullet->bulletY+0.5 && enemy->getEnemyX() >= bullet->bulletX-0.5 && enemy->getEnemyX() <= bullet->bulletX+0.05 ) {
+            // enemy->receiveDamage(bullet->damage);
+            *it=enemy;
         }
-        enemies.erase(it);
-         */
-        if(bullet->bulletLife==500)
-            lifeOver=true;
     }
+    enemies.erase(it);
+     */
+    if (bullet->bulletLife == 500)
+        lifeOver = true;
+}
 
 int main() {
     int spaceshipEnergy = 0, spaceshipHP = 10;
     int basicWeaponPower = 0;
     bool verse = true;
     bool bulletLifeOver;
-    int a=0;
+    int fireCadence = 0;
 
     // create the window
     sf::RenderWindow window(sf::VideoMode(1024, 512), "Volcano Battle");
@@ -198,13 +161,13 @@ int main() {
     ch1.setPosition(sf::Vector2f(player.getGameCharacterX(), player.getGameCharacterY()));
     //************* end charter1
 
-
+    //************* sprite Weapon
     sf::Texture weaponSprite;
     weaponSprite.loadFromFile("image/alien2.png");
     std::list<sf::Sprite> weaponSprites;
     std::list<Weapon *> weapons;
 
-
+    //************ sprite enemy
     sf::Texture enemyTexture;
     sf::Texture enemyTexture1;
     enemyTexture.loadFromFile("image/alien2.png");
@@ -212,54 +175,68 @@ int main() {
     std::list<sf::Sprite> enemySprites;
     std::list<Enemy *> enemies;
 
+    //************** sprite proiettili
     sf::Texture Bullet1;
     Bullet1.loadFromFile("image/projectile.png");
     std::list<sf::Sprite> bulletSprites;
     std::list<bullet *> bullets;
 
-    int i=0;
+    int i = 0;
+    EnemyFactory factoryE;
+    BulletFactory factoryB;
 
+    //************* GameLoop
     while (window.isOpen()) {
-        bulletLifeOver=false;
-        if (i == 10000){
-            enemies.push_back(createEnemy(generateCasualNumber(), generateCasualNumber(), generateCasualNumber()/10000, enemyTexture,enemyTexture1, enemySprites));
-            i = 0;
+        bulletLifeOver = false;
+        if (i == 10000) {
+            if (static_cast<int>(generateCasualNumber()) % 2 == 0) {
+                enemies.push_back(factoryE.createEnemy(EnemyType::Kamikaze, enemyTexture, generateCasualNumber(),
+                                                       generateCasualNumber(), generateCasualNumber() / 10000,
+                                                       enemySprites));
+                i = 0;
+            } else {
+                i = 0;
+                enemies.push_back(factoryE.createEnemy(EnemyType::Common, enemyTexture1, generateCasualNumber(),
+                                                       generateCasualNumber(), generateCasualNumber() / 10000,
+                                                       enemySprites));
+            }
         }
         i++;
-        GameEvent gameEvent = getEvent(a);
-        updateGame(gameEvent, player, player.getWeapon(), verse,Bullet1,bulletSprites,bullets);//mossa giocatore
+        GameEvent gameEvent = getEvent(fireCadence);
+        updateGame(gameEvent, player, player.getWeapon(), factoryB, verse, Bullet1, bulletSprites,
+                   bullets);//mossa giocatore
         ch1.setPosition(sf::Vector2f(player.getGameCharacterX(), player.getGameCharacterY()));
         if (!enemies.empty()) {
             for (auto enemy:enemies) {
-                auto it=enemySprites.begin();
-                it=std::next(it, enemy->spriteCode-1);
-                enemyControl(player, weapons, enemy,*it);//sprite alla posizione spritecode
+                auto it = enemySprites.begin();
+                it = std::next(it, enemy->spriteCode - 1);
+                enemyControl(player, weapons, enemy, *it);//sprite alla posizione spritecode
             }
         }
 
         if (!bullets.empty()) {
             for (auto bullet:bullets) {
-                bulletLifeOver=false;
-                auto it=bulletSprites.begin();
-                it=std::next(it, bullet->spriteCode-1);
-                bulletMovement(player, bullet, *it,bulletLifeOver, enemies);
+                bulletLifeOver = false;
+                auto it = bulletSprites.begin();
+                it = std::next(it, bullet->spriteCode - 1);
+                bulletMovement(player, bullet, *it, bulletLifeOver, enemies);
             }
         }
-        if(!bullets.empty()) {
+        if (!bullets.empty()) {
             if (bulletLifeOver) {
-               bullets.clear();
-               bulletSprites.clear();
+                bullets.clear();
+                bulletSprites.clear();
             }
         }
 
         window.clear(sf::Color(83, 87, 79));
         window.draw(sf);
         window.draw(map);
-        if(!enemySprites.empty()) {
+        if (!enemySprites.empty()) {
             for (auto &sprite:enemySprites)
                 window.draw(sprite);
         }
-        if(!bulletSprites.empty()) {
+        if (!bulletSprites.empty()) {
             for (auto &sprite:bulletSprites)
                 window.draw(sprite);
         }
