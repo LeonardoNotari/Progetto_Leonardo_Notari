@@ -49,7 +49,7 @@ float generateCasualNumber() {
 }
 
 
-void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, BulletFactory factory, bool &verse,
+void updateGame(const GameEvent &gameEvent,int power, GameCharacter &player, Weapon *gun, BulletFactory factory, bool &verse,
                 const sf::Texture &bulletTexture, std::list<sf::Sprite> &sprites, std::list<bullet *> &bullets) {
     switch (gameEvent) {
         case GameEvent::up: {
@@ -71,8 +71,8 @@ void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, 
             break;
         }
         case GameEvent::fire: {
-            bullets.push_back(factory.createBullet(BulletType::Common, verse, bulletTexture, player.getGameCharacterX(),
-                                                   player.getGameCharacterY(), sprites));
+            bullets.push_back(factory.createBullet(BulletType::Common,power, verse, bulletTexture, player.getGameCharacterX(),
+                                                   player.getGameCharacterY()));
             break;
         }
         case GameEvent::noop: {
@@ -82,45 +82,63 @@ void updateGame(const GameEvent &gameEvent, GameCharacter &player, Weapon *gun, 
 }
 
 
+
+
+
+// MOVIMENTO E CONTROLLO POSIZIONE ENEMICI
 void enemyControl(GameCharacter &player, std::list<Weapon *> &weapons,
-                  Enemy *enemy, sf::Sprite &sprite) {//controllo delle posizioni
+                  Enemy *enemy,bool &enemyHasWeapon) {//controllo delle posizioni
     float gameCharacterX, gameCharacterY;
+    enemyHasWeapon=false;
     gameCharacterX = player.getGameCharacterX();
     gameCharacterY = player.getGameCharacterY();
     enemy->move(gameCharacterX, gameCharacterY);//movimento del nemico
-    sprite.setPosition(sf::Vector2f(enemy->getEnemyX(), enemy->getEnemyY()));
+    enemy->attack(player,enemyHasWeapon);
+    enemy->sprite.setPosition(sf::Vector2f(enemy->getEnemyX(), enemy->getEnemyY()));
 
 }
 
 
-void
-bulletMovement(GameCharacter &player, bullet *bullet, sf::Sprite &sprite, bool &lifeOver, std::list<Enemy *> &enemies) {
+
+
+
+//MOVIMENTO E CONTROLLO POSIZIONE DEI PROIETTILI
+void bulletMovement(GameCharacter &player, bullet *bullet,std::list<Enemy *> &enemies) {
     if (bullet->bulletVerse)
         bullet->move(1);
     else
         bullet->move(-1);
-    sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
-    /*if (player.getGameCharacterY() == bullet->bulletX && player.getGameCharacterX() == bullet->bulletY)
+    bullet->sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
+    if (player.getGameCharacterX() >= bullet->bulletY - 0.5 && player.getGameCharacterY() <= bullet->bulletY + 0.5 && player.getGameCharacterX() >= bullet->bulletX - 0.5 && player.getGameCharacterX() <= bullet->bulletX + 0.5)
         player.receiveDamage(bullet->damage);
-    auto it=enemies.begin();
     for (auto enemy:enemies) {
-        if (enemy->getEnemyY() >= bullet->bulletY-0.05 && enemy->getEnemyY() <= bullet->bulletY+0.5 && enemy->getEnemyX() >= bullet->bulletX-0.5 && enemy->getEnemyX() <= bullet->bulletX+0.05 ) {
-            // enemy->receiveDamage(bullet->damage);
-            *it=enemy;
+        if (enemy->getEnemyY() >= bullet->bulletY - 0.5 && enemy->getEnemyY() <= bullet->bulletY + 0.5 &&
+            enemy->getEnemyX() >= bullet->bulletX - 0.5 && enemy->getEnemyX() <= bullet->bulletX + 0.5) {
+            enemy->receiveDamage(bullet->damage);
         }
     }
-    enemies.erase(it);
-     */
-    if (bullet->bulletLife == 500)
-        lifeOver = true;
 }
 
+
+
+
+
 int main() {
-    int spaceshipEnergy = 0, spaceshipHP = 10;
-    int basicWeaponPower = 0;
+    int spaceshipEnergy = 0, spaceshipHP = 50000;
+    int basicWeaponPower = 50;
     bool verse = true;
-    bool bulletLifeOver;
+    bool enemyBulletVerse;
+    bool enemyHasWeapon;
     int fireCadence = 0;
+    int playerDamage;
+    int  spawnEnemy = 10000;
+    int maxNumberOfEnemy=4;
+    int cadenzaEnemyBullet=0;
+    bool drawExplosion=false;
+    int lifeOfExplosion=0;
+    int enemyDefeated=0;
+
+
 
     // create the window
     sf::RenderWindow window(sf::VideoMode(1024, 512), "Volcano Battle");
@@ -134,7 +152,6 @@ int main() {
                     3, 3, 3, 3, 3, 8, 3, 3, 3, 8, 3, 3, 3, 3, 3, 3, 3, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8,
 
             };
-
     // create the tilemap from the level definition
     TileMap map;
     if (!map.load("image/tiles.png", sf::Vector2u(32, 32), level, 32, 3))
@@ -152,14 +169,15 @@ int main() {
     // *********charter1
     GameCharacter player(spaceshipEnergy, spaceshipHP);//istanza personaggio
     Weapon baseGun(basicWeaponPower);//istanza arma di base
-    player.equipWeapon(1, &baseGun);
+    player.equipWeapon(baseGun.getWeaponCost(), &baseGun);
     sf::Texture charter1;
-    if (!charter1.loadFromFile("image/starshipdark.png"))
-        return -1;
+    if (!charter1.loadFromFile("image/starshipdark.png"))return -1;
     sf::Sprite ch1;
     ch1.setTexture(charter1);
     ch1.setPosition(sf::Vector2f(player.getGameCharacterX(), player.getGameCharacterY()));
     //************* end charter1
+
+
 
     //************* sprite Weapon
     sf::Texture weaponSprite;
@@ -167,13 +185,32 @@ int main() {
     std::list<sf::Sprite> weaponSprites;
     std::list<Weapon *> weapons;
 
+   //************* sprite item
+    //FIXME DEFINIRE MEGLIO E AGGIUNGERLI AL GAMELOOP
+    sf::Texture lifeTexture;
+    lifeTexture.loadFromFile("image/life1.png");
+    sf::Sprite lifeIncrease(lifeTexture);
+    lifeIncrease.setPosition(sf::Vector2f(500, 200));
+
+    sf::Texture energyTexture;
+    energyTexture.loadFromFile("image/marker_statue3.png");
+    sf::Sprite energyIncrease(energyTexture);
+    energyIncrease.setPosition(sf::Vector2f(550, 200));
+
+
+    sf::Texture explosionTexture;
+    explosionTexture.loadFromFile("image/explosion.png");
+    sf::Sprite explosion(explosionTexture);
+
+
     //************ sprite enemy
     sf::Texture enemyTexture;
     sf::Texture enemyTexture1;
     enemyTexture.loadFromFile("image/alien2.png");
     enemyTexture1.loadFromFile("image/Ship10.png");
-    std::list<sf::Sprite> enemySprites;
     std::list<Enemy *> enemies;
+
+
 
     //************** sprite proiettili
     sf::Texture Bullet1;
@@ -181,71 +218,126 @@ int main() {
     std::list<sf::Sprite> bulletSprites;
     std::list<bullet *> bullets;
 
-    int i = 0;
+
     EnemyFactory factoryE;
     BulletFactory factoryB;
+    WeaponFactory factoryW;
 
-    //************* GameLoop
+
+
+    //************* GAMELOOP
     while (window.isOpen()) {
-        bulletLifeOver = false;
-        if (i == 10000) {
-            if (static_cast<int>(generateCasualNumber()) % 2 == 0) {
-                enemies.push_back(factoryE.createEnemy(EnemyType::Kamikaze, enemyTexture, generateCasualNumber(),
-                                                       generateCasualNumber(), generateCasualNumber() / 10000,
-                                                       enemySprites));
-                i = 0;
-            } else {
-                i = 0;
-                enemies.push_back(factoryE.createEnemy(EnemyType::Common, enemyTexture1, generateCasualNumber(),
-                                                       generateCasualNumber(), generateCasualNumber() / 10000,
-                                                       enemySprites));
+        playerDamage = player.getWeapon()->getWeaponPower();
+
+
+        //*********************** CREAZIONE NEMICI CON UN NUMERO MASSIMO OGNI 10000 CICLI
+
+        if (enemies.size() < maxNumberOfEnemy){
+            if (spawnEnemy >= 10000) {
+                if (static_cast<int>(generateCasualNumber()) % 2 == 0) {
+                    enemies.push_back(factoryE.createEnemy(EnemyType::Kamikaze, enemyTexture, generateCasualNumber(),
+                                                           generateCasualNumber(), generateCasualNumber() / 10000));
+                }else
+                    enemies.push_back(factoryE.createEnemy(EnemyType::Common, enemyTexture1, generateCasualNumber(),
+                                                           generateCasualNumber(), generateCasualNumber() / 10000));
+                spawnEnemy=0;
             }
         }
-        i++;
+        spawnEnemy++;
+
+        //***************** MOVIMENTO GAMECHARACTER E CONSEGUENTE MOVIMENTO DEI NEMICI
+        cadenzaEnemyBullet++;
         GameEvent gameEvent = getEvent(fireCadence);
-        updateGame(gameEvent, player, player.getWeapon(), factoryB, verse, Bullet1, bulletSprites,
+        updateGame(gameEvent,playerDamage, player, player.getWeapon(), factoryB, verse, Bullet1, bulletSprites,
                    bullets);//mossa giocatore
         ch1.setPosition(sf::Vector2f(player.getGameCharacterX(), player.getGameCharacterY()));
         if (!enemies.empty()) {
             for (auto enemy:enemies) {
-                auto it = enemySprites.begin();
-                it = std::next(it, enemy->spriteCode - 1);
-                enemyControl(player, weapons, enemy, *it);//sprite alla posizione spritecode
+                enemyControl(player, weapons, enemy, enemyHasWeapon);//sprite alla posizione spritecode
+                if (enemyHasWeapon && cadenzaEnemyBullet >= 200) {
+                    enemyBulletVerse = enemy->getEnemyX() < player.getGameCharacterX();
+                    bullets.push_back(
+                            factoryB.createBullet(BulletType::Common, enemy->getEnemyDamage(), enemyBulletVerse,
+                                                  Bullet1,
+                                                  enemy->getEnemyX(),
+                                                  enemy->getEnemyY()));
+                    cadenzaEnemyBullet = 0;
+                }
             }
         }
 
+        //************** MOVIMENTO PROIETTILI
+
         if (!bullets.empty()) {
             for (auto bullet:bullets) {
-                bulletLifeOver = false;
-                auto it = bulletSprites.begin();
-                it = std::next(it, bullet->spriteCode - 1);
-                bulletMovement(player, bullet, *it, bulletLifeOver, enemies);
+                bulletMovement(player, bullet, enemies);
             }
         }
+
+
+        //**************  CANCELLA NEMICI
+        if(!enemies.empty()) {
+            Enemy* enemy;
+            auto it=enemies.begin();
+            while (it!=enemies.end()) {
+                enemy=*it;
+                it++;
+                if (enemy->getEnemyHP() <= 0) {
+                    explosion.setPosition(sf::Vector2f(enemy->getEnemyX()-400, enemy->getEnemyY()-300));
+                    enemies.remove(enemy);
+                    drawExplosion=true;
+                }
+            }
+        }
+
+
+
+
+        //************* ELIMINAZIONE PROIETTILI
+
         if (!bullets.empty()) {
-            if (bulletLifeOver) {
-                bullets.clear();
-                bulletSprites.clear();
-            }
+                bullet *bullet;
+                auto it = bullets.begin();
+                while (it != bullets.end()) {
+                    bullet = *it;
+                    it++;
+                    if (bullet->bulletLife==500) {
+                        bullets.remove(bullet);
+                    }
+                }
         }
+
+
+        //************* DISEGNA SPRITE E MAPPA
 
         window.clear(sf::Color(83, 87, 79));
         window.draw(sf);
         window.draw(map);
-        if (!enemySprites.empty()) {
-            for (auto &sprite:enemySprites)
-                window.draw(sprite);
+        if(!enemies.empty()) {
+                for (auto enemy:enemies)
+                    window.draw(enemy->sprite);
         }
-        if (!bulletSprites.empty()) {
-            for (auto &sprite:bulletSprites)
-                window.draw(sprite);
+        if (!bullets.empty()) {
+            for (auto bullet:bullets)
+                window.draw(bullet->sprite);
         }
         window.draw(ch1);
+        window.draw(lifeIncrease);
+        window.draw(energyIncrease);
+        if(drawExplosion) {
+            lifeOfExplosion++;
+            window.draw(explosion);
+            if(lifeOfExplosion>=500) {
+                drawExplosion = false;
+                lifeOfExplosion=0;
+            }
+        }
         window.display();
-
         sf::Event event{};
+        if (player.getGameCharacterHP()<=0 )//CHIUDE FINESTRA SE LA VITA DEL GIOCATORE <=0
+            window.close();
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed  )
                 window.close();
         }
     }

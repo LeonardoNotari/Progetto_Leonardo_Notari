@@ -6,6 +6,7 @@
 #include "Weapon.h"
 #include "WeaponFactory.h"
 
+
 Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture,
                                     std::list<sf::Sprite> &sprites) {
     Weapon *weapon;

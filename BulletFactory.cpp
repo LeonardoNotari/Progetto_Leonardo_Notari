@@ -7,16 +7,14 @@
 #include "BulletFactory.h"
 
 
-bullet *BulletFactory::createBullet(BulletType type, bool verse, const sf::Texture &bulletTexture, float X, float Y,
-                                    std::list<sf::Sprite> &sprites) {
+
+bullet *BulletFactory::createBullet(BulletType type,int power, bool verse, const sf::Texture &bulletTexture, float X, float Y) {
     bullet *bullet = nullptr;
     sf::Sprite B;
     if (type == BulletType::Common) {
         B.setTexture(bulletTexture);
-        bullet = new class bullet(0, verse, X, Y);
+        bullet = new class bullet(power, verse, X, Y,B);
     }
-    B.setPosition(sf::Vector2f(X, Y));
-    sprites.push_back(B);
-    bullet->spriteCode = sprites.size();
+    bullet->sprite.setPosition(sf::Vector2f(X, Y));
     return bullet;
 }

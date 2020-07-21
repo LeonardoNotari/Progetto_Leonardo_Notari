@@ -7,19 +7,20 @@
 
 #include <list>
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "GameCharacter.h"
 #include "Enemy.h"
 
 class bullet {
 public:
-    bullet(int power, bool verse, float x, float y);
+    bullet(int power, bool verse, float x, float y,sf::Sprite  bulletSprite);
 
     void move(float increment);
 
     bool bulletVerse;
     float bulletX, bulletY;
     int damage;
-    int spriteCode;
+    sf::Sprite sprite;
     int bulletLife{0};
 };
 

@@ -16,8 +16,9 @@ enum class EnemyType {
 class EnemyFactory {
 
 public:
-    virtual Enemy *createEnemy(EnemyType type, const sf::Texture &enemyTexture, float X, float Y, float speed,
-                               std::list<sf::Sprite> &sprites);
+
+
+    virtual Enemy *createEnemy(EnemyType type, const sf::Texture &enemyTexture, float X, float Y, float speed);
 };
 
 

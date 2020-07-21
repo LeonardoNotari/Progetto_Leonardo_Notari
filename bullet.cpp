@@ -1,16 +1,16 @@
 //
 // Created by leonardo on 09/07/20.
 //
-#include <list>
-#include <vector>
-#include "bullet.h"
-#include "GameCharacter.h"
-#include "Enemy.h"
 
-bullet::bullet(int power, bool verse, float x, float y) : damage(power), bulletVerse(verse), bulletX(x), bulletY(y) {}
+#include <utility>
+#include <SFML/Graphics.hpp>
+#include "bullet.h"
+
+
+bullet::bullet(int power, bool verse, float x, float y,sf::Sprite  bulletSprite) : damage(power), bulletVerse(verse), bulletX(x), bulletY(y), sprite(std::move(bulletSprite)) {}
 
 
 void bullet::move(float increment) {
-    bulletLife++;
-    bulletX += increment;
+    this->bulletLife++;
+    this->bulletX += increment;
 }

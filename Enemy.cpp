@@ -4,9 +4,10 @@
 
 #include "Enemy.h"
 
+#include <utility>
 
-Enemy::Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed) : posX(enemyX), posY(enemyY),
-                                                                             damage(enemyPower), speed(enemySpeed) {}
+
+Enemy::Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite) : posX(enemyX), posY(enemyY),damage(enemyPower), speed(enemySpeed), sprite(std::move(enemySprite)) {}
 
 Enemy::~Enemy() {
     delete this;
@@ -26,4 +27,8 @@ int Enemy::getEnemyHP() const {
 
 void Enemy::receiveDamage(int enemyDamage) {
     this->hp -= enemyDamage;
+}
+
+int Enemy::getEnemyDamage() const {
+    return this->damage;
 }

@@ -11,6 +11,7 @@ enum class WeaponType {
 class WeaponFactory {
 public:
 
+
     virtual Weapon *
     createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture, std::list<sf::Sprite> &sprites);
 };

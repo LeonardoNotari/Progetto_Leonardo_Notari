@@ -10,8 +10,9 @@ enum class BulletType {
 
 class BulletFactory {
 public:
-    virtual bullet *createBullet(BulletType type, bool verse, const sf::Texture &bulletTexture, float X, float Y,
-                                 std::list<sf::Sprite> &sprites);
+
+
+    virtual bullet *createBullet(BulletType type,int power, bool verse, const sf::Texture &bulletTexture, float X, float Y);
 };
 
 

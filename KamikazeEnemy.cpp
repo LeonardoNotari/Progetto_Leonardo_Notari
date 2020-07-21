@@ -2,11 +2,13 @@
 // Created by leonardo on 04/07/20.
 //
 #include "KamikazeEnemy.h"
+
+#include <utility>
 #include "GameCharacter.h"
 
-KamikazeEnemy::KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed) : Enemy(enemyX, enemyY,
+KamikazeEnemy::KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite) : Enemy(enemyX, enemyY,
                                                                                                    enemyPower,
-                                                                                                   enemySpeed) {}
+                                                                                                   enemySpeed,std::move(enemySprite)) {}
 
 void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX)
@@ -19,11 +21,11 @@ void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
         posY -= speed;
 }
 
-bool KamikazeEnemy::attack(GameCharacter &player) {
-    if (posX > player.getGameCharacterX() - 1 && posX < player.getGameCharacterY() - 1 &&
-        posY > player.getGameCharacterX() - 1 && posY < player.getGameCharacterY() - 1) {
-        player.receiveDamage(damage);
-        return true;
+void KamikazeEnemy::attack(GameCharacter &player,bool &enemyHasWeapon) {
+    if (posX > player.getGameCharacterX() - 10 && posX < player.getGameCharacterY() + 10 &&
+        posY > player.getGameCharacterX() - 10 && posY < player.getGameCharacterY() + 10) {
+        player.receiveDamage(this->damage);
+        this->hp=0;
     }
-    return false;
+    enemyHasWeapon=false;
 }
