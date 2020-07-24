@@ -6,9 +6,10 @@
 #include <utility>
 #include "GameCharacter.h"
 
-KamikazeEnemy::KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite) : Enemy(enemyX, enemyY,
-                                                                                                   enemyPower,
-                                                                                                   enemySpeed,std::move(enemySprite)) {}
+KamikazeEnemy::KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite)
+        : Enemy(enemyX, enemyY,
+                enemyPower,
+                enemySpeed, std::move(enemySprite)) {}
 
 void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX)
@@ -21,11 +22,11 @@ void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
         posY -= speed;
 }
 
-void KamikazeEnemy::attack(GameCharacter &player,bool &enemyHasWeapon) {
+void KamikazeEnemy::attack(GameCharacter &player, bool &enemyHasWeapon) {
     if (posX > player.getGameCharacterX() - 10 && posX < player.getGameCharacterY() + 10 &&
         posY > player.getGameCharacterX() - 10 && posY < player.getGameCharacterY() + 10) {
         player.receiveDamage(this->damage);
-        this->hp=0;
+        this->hp = 0;
     }
-    enemyHasWeapon=false;
+    enemyHasWeapon = false;
 }

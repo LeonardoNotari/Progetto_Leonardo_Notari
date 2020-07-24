@@ -5,15 +5,15 @@
 #ifndef PROGETTO_LEONARDO_NOTARI_WEAPON_H
 #define PROGETTO_LEONARDO_NOTARI_WEAPON_H
 
+#include <SFML/Graphics.hpp>
+
 class Weapon {
 public:
-    int spriteCode;
 
-    explicit Weapon(int basicWeaponPower);
+    explicit Weapon(int basicWeaponPower, int weaponCadence, int weaponRange);
 
-    Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY);
-
-    virtual void use();
+    Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY, sf::Sprite weaponSprite, int weaponCadence,
+           int weaponRange, int weaponBullet);
 
     int getWeaponCost() const;
 
@@ -23,11 +23,21 @@ public:
 
     int getWeaponPower() const;
 
+    int getWeaponCadence() const;
+
+    int getWeaponRange() const;
+
+    sf::Sprite sprite;
+
 protected:
+    bool noBaseGun;
     int power;
     int cost;
     float posX;
     float posY;
+    int range;
+    int cadence;
+    int bullet;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_WEAPON_H

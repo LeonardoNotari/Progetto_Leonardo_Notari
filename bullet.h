@@ -13,7 +13,7 @@
 
 class bullet {
 public:
-    bullet(int power, bool verse, float x, float y,sf::Sprite  bulletSprite);
+    bullet(int power, bool verse, float x, float y, sf::Sprite bulletSprite, int bulletRange);
 
     void move(float increment);
 
@@ -22,6 +22,7 @@ public:
     int damage;
     sf::Sprite sprite;
     int bulletLife{0};
+    int range;
 };
 
 

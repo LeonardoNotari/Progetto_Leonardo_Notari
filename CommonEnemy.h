@@ -10,11 +10,11 @@
 
 class CommonEnemy : public Enemy {
 public:
-    CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite);
+    CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
 
     void move(float gamecharacterX, float gamecharacterY) override;
 
-    void attack(GameCharacter &player,bool &enemyHasWeapon) override;
+    void attack(GameCharacter &player, bool &enemyHasWeapon) override;
 };
 
 

@@ -11,13 +11,13 @@
 class Enemy {
 public:
 
-    Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite);
+    Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
 
     virtual~Enemy();
 
     virtual void move(float gamecharacterX, float gamecharacterY) = 0;
 
-    virtual void attack(GameCharacter &player,bool &enemyHasWeapon) = 0;
+    virtual void attack(GameCharacter &player, bool &enemyHasWeapon) = 0;
 
     void receiveDamage(int damage);
 
@@ -31,7 +31,7 @@ public:
 
     sf::Sprite sprite;
 protected:
-    int hp = 100;
+    int hp = 200;
     float posX;
     float posY;
     int damage;

@@ -11,7 +11,7 @@
 class GameCharacter {
 public:
 
-    GameCharacter(int spaceshipEnergy, int spaceshipHP);
+    GameCharacter(int spaceshipEnergy, int spaceshipHP, sf::Sprite playerSprite);
 
     bool isPossibleEquipWeapon(int cost);
 
@@ -28,6 +28,8 @@ public:
     void receiveDamage(int damage);
 
     int getGameCharacterHP() const;
+
+    sf::Sprite sprite;
 
 protected:
     Weapon *weapon{nullptr};

@@ -5,15 +5,13 @@
 #ifndef PROGETTO_LEONARDO_NOTARI__WEAPONFACTORY_H
 #define PROGETTO_LEONARDO_NOTARI__WEAPONFACTORY_H
 enum class WeaponType {
-    Common
+    Bazooka, MachineGun, LaserGun
 };
 
 class WeaponFactory {
 public:
-
-
     virtual Weapon *
-    createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture, std::list<sf::Sprite> &sprites);
+    createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture);
 };
 
 

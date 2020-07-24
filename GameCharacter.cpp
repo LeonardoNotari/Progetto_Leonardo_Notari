@@ -3,11 +3,18 @@
 //
 
 #include "GameCharacter.h"
+
+#include <utility>
 #include "Weapon.h"
 
 
-GameCharacter::GameCharacter(int spaceshipEnergy, int spaceshipHP) : posX(0), posY(0), energy(spaceshipEnergy),
-                                                                     freeEnergy(spaceshipEnergy), HP(spaceshipHP) {}
+GameCharacter::GameCharacter(int spaceshipEnergy, int spaceshipHP, sf::Sprite playerSprite) : posX(0), posY(0),
+                                                                                              energy(spaceshipEnergy),
+                                                                                              freeEnergy(
+                                                                                                      spaceshipEnergy),
+                                                                                              HP(spaceshipHP),
+                                                                                              sprite(std::move(
+                                                                                                      playerSprite)) {}
 
 bool GameCharacter::isPossibleEquipWeapon(int cost) {
     if (cost <= freeEnergy) {

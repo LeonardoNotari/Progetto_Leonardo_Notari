@@ -11,11 +11,11 @@
 
 class KamikazeEnemy : virtual public Enemy {
 public:
-    KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float speed,sf::Sprite enemySprite);
+    KamikazeEnemy(float enemyX, float enemyY, int enemyPower, float speed, sf::Sprite enemySprite);
 
     void move(float gamecharacterX, float gamecharacterY) override;
 
-    void attack(GameCharacter &player,bool &enemyHasWeapon) override;
+    void attack(GameCharacter &player, bool &enemyHasWeapon) override;
 
 };
 

@@ -8,9 +8,10 @@
 #include "GameCharacter.h"
 
 
-CommonEnemy::CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite) : Enemy(enemyX, enemyY,
-                                                                                               enemyPower,
-                                                                                               enemySpeed, std::move(enemySprite)) {}
+CommonEnemy::CommonEnemy(float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite) : Enemy(
+        enemyX, enemyY,
+        enemyPower,
+        enemySpeed, std::move(enemySprite)) {}
 
 void CommonEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX - 200 || (posX > gamecharacterX && posX < gamecharacterX + 200)) {
@@ -25,8 +26,8 @@ void CommonEnemy::move(float gamecharacterX, float gamecharacterY) {
         posY -= speed;
 }
 
-void CommonEnemy::attack(GameCharacter &player,bool &enemyHasWeapon) {
-    if( player.getGameCharacterY()<= this->posY+1 && player.getGameCharacterY()>= this->posY-1)
-        enemyHasWeapon=true;
+void CommonEnemy::attack(GameCharacter &player, bool &enemyHasWeapon) {
+    if (player.getGameCharacterY() <= this->posY + 1 && player.getGameCharacterY() >= this->posY - 1)
+        enemyHasWeapon = true;
 }
 

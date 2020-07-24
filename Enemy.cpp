@@ -7,7 +7,12 @@
 #include <utility>
 
 
-Enemy::Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed,sf::Sprite enemySprite) : posX(enemyX), posY(enemyY),damage(enemyPower), speed(enemySpeed), sprite(std::move(enemySprite)) {}
+Enemy::Enemy(float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite) : posX(enemyX),
+                                                                                                     posY(enemyY),
+                                                                                                     damage(enemyPower),
+                                                                                                     speed(enemySpeed),
+                                                                                                     sprite(std::move(
+                                                                                                             enemySprite)) {}
 
 Enemy::~Enemy() {
     delete this;

@@ -7,7 +7,13 @@
 #include "bullet.h"
 
 
-bullet::bullet(int power, bool verse, float x, float y,sf::Sprite  bulletSprite) : damage(power), bulletVerse(verse), bulletX(x), bulletY(y), sprite(std::move(bulletSprite)) {}
+bullet::bullet(int power, bool verse, float x, float y, sf::Sprite bulletSprite, int bulletRange) : damage(power),
+                                                                                                    bulletVerse(verse),
+                                                                                                    bulletX(x),
+                                                                                                    bulletY(y),
+                                                                                                    sprite(std::move(
+                                                                                                            bulletSprite)),
+                                                                                                    range(bulletRange) {}
 
 
 void bullet::move(float increment) {
