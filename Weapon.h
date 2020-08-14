@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class Weapon {
 public:
 
@@ -25,19 +26,24 @@ public:
 
     int getWeaponCadence() const;
 
+    int getWeaponBullet() const;
+
+    void setWeaponBullet();
+
     int getWeaponRange() const;
+
+    bool equip {false};
 
     sf::Sprite sprite;
 
 protected:
-    bool noBaseGun;
+    int bullet;
     int power;
     int cost;
-    float posX;
-    float posY;
+    float posX{};
+    float posY{};
     int range;
     int cadence;
-    int bullet;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_WEAPON_H

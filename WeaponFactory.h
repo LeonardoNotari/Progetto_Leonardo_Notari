@@ -4,8 +4,11 @@
 
 #ifndef PROGETTO_LEONARDO_NOTARI__WEAPONFACTORY_H
 #define PROGETTO_LEONARDO_NOTARI__WEAPONFACTORY_H
+
+#include "Weapon.h"
+
 enum class WeaponType {
-    Bazooka, MachineGun, LaserGun
+     MachineGun, LaserGun,Bazooka
 };
 
 class WeaponFactory {

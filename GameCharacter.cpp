@@ -3,42 +3,32 @@
 //
 
 #include "GameCharacter.h"
-
 #include <utility>
 #include "Weapon.h"
 
 
-GameCharacter::GameCharacter(int spaceshipEnergy, int spaceshipHP, sf::Sprite playerSprite) : posX(0), posY(0),
-                                                                                              energy(spaceshipEnergy),
-                                                                                              freeEnergy(
-                                                                                                      spaceshipEnergy),
-                                                                                              HP(spaceshipHP),
-                                                                                              sprite(std::move(
-                                                                                                      playerSprite)) {}
+GameCharacter::GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite) : Character(gameCharacterHP,gameCharacterX,gameCharacterY,std::move(playerSprite)),energy(spaceshipEnergy) {}
 
-bool GameCharacter::isPossibleEquipWeapon(int cost) {
-    if (cost <= freeEnergy) {
-        freeEnergy -= cost;
+bool GameCharacter::isPossibleEquipWeapon(int cost) const {
+    if (cost <= this->energy) {
         return true;
     } else
         return false;
 }
 
-void GameCharacter::equipWeapon(int cost, Weapon *gun) {
-    if (this->isPossibleEquipWeapon(cost))
+void GameCharacter::equipWeapon(Weapon *gun) {
+    if (this->isPossibleEquipWeapon(gun->getWeaponCost())) {
         this->weapon = gun;
+        gun->equip=true;
+    }
 }
 
 Weapon *GameCharacter::getWeapon() const {
     return this->weapon;
 }
 
-float GameCharacter::getGameCharacterX() const {
-    return this->posX;
-}
-
-float GameCharacter::getGameCharacterY() const {
-    return this->posY;
+int GameCharacter::getEnergy() const {
+    return this->energy;
 }
 
 void GameCharacter::move(float x, float y) {
@@ -46,10 +36,10 @@ void GameCharacter::move(float x, float y) {
     posY += y;
 }
 
-void GameCharacter::receiveDamage(int damage) {
-    this->HP -= damage;
+void GameCharacter::setEnergy(int increment){
+    this->energy+=increment;
 }
 
-int GameCharacter::getGameCharacterHP() const {
-    return this->HP;
+void GameCharacter::setHP(int increment){
+    this->HP+=increment;
 }

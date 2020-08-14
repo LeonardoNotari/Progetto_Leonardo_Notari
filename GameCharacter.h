@@ -7,37 +7,30 @@
 
 #include <iostream>
 #include "Weapon.h"
+#include "Character.h"
 
-class GameCharacter {
+class GameCharacter: public Character {
 public:
 
-    GameCharacter(int spaceshipEnergy, int spaceshipHP, sf::Sprite playerSprite);
+    GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite);
 
-    bool isPossibleEquipWeapon(int cost);
-
-    void equipWeapon(int cost, Weapon *weapon);
+    void equipWeapon(Weapon *weapon);
 
     Weapon *getWeapon() const;
 
-    float getGameCharacterX() const;
+    int getEnergy() const;
 
-    float getGameCharacterY() const;
+    void move(float x, float y) override;
 
-    void move(float x, float y);
+    void setHP(int increment);
 
-    void receiveDamage(int damage);
-
-    int getGameCharacterHP() const;
-
-    sf::Sprite sprite;
+    void setEnergy(int incremento);
 
 protected:
+    bool isPossibleEquipWeapon(int cost) const;
     Weapon *weapon{nullptr};
-    float posX;
-    float posY;
-    int HP;
     int energy;
-    int freeEnergy;
+    //int freeEnergy {energy}; FIXME se si vuole poter equipaggiare piu armi
     std::string name;
 };
 

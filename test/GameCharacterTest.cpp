@@ -2,43 +2,44 @@
 // Created by leonardo on 01/07/20.
 //
 #include <gtest/gtest.h>
+#include <SFML/Graphics.hpp>
 #include "../GameCharacter.h"
 #include "../Weapon.h"
 #include "../KamikazeEnemy.h"
 
-TEST(GameCharacter, IsPossibleEquipWeapon) {
-    GameCharacter player(5, 10);
-    ASSERT_TRUE(player.isPossibleEquipWeapon(5));
-}
 
 TEST(GameCharacter, EquipWeapon) {
-    int power;
-    Weapon *weapon;
-    GameCharacter player(8, 10);
-    Weapon gun(9, 5, 0, 0);
-    player.equipWeapon(6, &gun);
-    weapon = player.getWeapon();
-    power = weapon->getWeaponPower();
-    ASSERT_EQ(9, power);
+    sf::Texture playerTexture;
+    sf::Sprite spriteTest;
+    spriteTest.setTexture(playerTexture);
+    GameCharacter player(100,0,0,0,spriteTest);
+    Weapon gun(9,0,0,0, spriteTest,0,0,0);
+    player.equipWeapon(gun.getWeaponCost(), &gun);
+    ASSERT_EQ(player.getWeapon()->getWeaponPower(), 9);
 }
 
 TEST(GameCharacter, Move) {
-    int X, Y;
-    GameCharacter player(8, 10);
+    sf::Texture playerTexture;
+    sf::Sprite spriteTest;
+    spriteTest.setTexture(playerTexture);
+    GameCharacter player(8, 0,0,0,spriteTest);
     player.move(0, 1);
     player.move(1, 0);
-    X = player.getGameCharacterX();
-    Y = player.getGameCharacterY();
-    ASSERT_EQ(1, X);
-    ASSERT_EQ(1, Y);
+    player.move(1, 0);
+    player.move(1, 0);
+    player.move(1, 0);
+    ASSERT_EQ(4, player.getX());
+    ASSERT_EQ(1, player.getY());
 }
 
 TEST(GameCharacter, ReceivedDamage) {
-    int hp;
-    GameCharacter player(0, 10);
-    KamikazeEnemy alien(1, 0, 9);
-    player.receiveDamage(alien.attack(1, 0));
-    hp = player.getGameCharacterHP();
-    ASSERT_EQ(1, hp);
+    sf::Texture playerTexture;
+    sf::Sprite spriteTest;
+    bool a=false;
+    spriteTest.setTexture(playerTexture);
+    GameCharacter player(200,2,2, 10,spriteTest);
+    KamikazeEnemy alien(1, 0,0,100, 9,spriteTest);
+    alien.attack(player,a);
+    ASSERT_EQ(100, player.getHP());
 }
 

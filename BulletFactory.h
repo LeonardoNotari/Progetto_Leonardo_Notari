@@ -17,8 +17,7 @@ public:
 
 
     virtual bullet *
-    createBullet(BulletType type, int power, bool verse, const sf::Texture &bulletTexture, float X, float Y,
-                 int bulletLife);
+    createBullet(const Character &character,BulletType type, int power, bool verse, const sf::Texture &bulletTexture, int bulletRange);
 };
 
 

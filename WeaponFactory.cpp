@@ -11,25 +11,25 @@ Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf:
     Weapon *weapon;
     int bullets, cadence, range, power, cost;
     if (type == WeaponType::MachineGun) {
-        bullets = 10000;
+        bullets = 700;
         cadence = 50;
-        range = 5000;
+        range = 500;
         power = 100;
-        cost = 0;
+        cost = 200;
     }
     if (type == WeaponType::Bazooka) {
-        bullets = 100;
-        cadence = 500;
+        bullets = 30;
+        cadence = 800;
         range = 5000;
-        power = 1000;
-        cost = 0;
+        power = 2000;
+        cost = 200;
     }
     if (type == WeaponType::LaserGun) {
-        bullets = 10000;
-        cadence = 0;
-        range = 10000;
-        power = 50;
-        cost = 0;
+        bullets = 1000;
+        cadence = 10;
+        range = 1000;
+        power = 20;
+        cost = 200;
     }
     sf::Sprite W;
     W.setTexture(weaponTexture);
