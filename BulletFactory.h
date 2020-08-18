@@ -8,16 +8,12 @@
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
 
-enum class BulletType {
-    Common
-};
-
 class BulletFactory {
 public:
 
 
     virtual bullet *
-    createBullet(const Character &character,BulletType type, int power, bool verse, const sf::Texture &bulletTexture, int bulletRange);
+    createBullet(const Character &character, int power, bool verse, const sf::Texture &bulletTexture, int bulletRange);
 };
 
 

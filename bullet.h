@@ -11,6 +11,7 @@
 #include "GameCharacter.h"
 #include "Enemy.h"
 
+
 class bullet {
 public:
     bullet(int power, bool verse, float x, float y, sf::Sprite bulletSprite, int bulletRange);

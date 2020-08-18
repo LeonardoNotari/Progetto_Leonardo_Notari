@@ -20,6 +20,10 @@ public:
 
     int getEnergy() const;
 
+    float getXMax() const;
+
+    float getXMin() const;
+
     void move(float x, float y) override;
 
     void setHP(int increment);
@@ -32,6 +36,8 @@ protected:
     int energy;
     //int freeEnergy {energy}; FIXME se si vuole poter equipaggiare piu armi
     std::string name;
+    float xMax{4048};
+    float xMin{0};
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

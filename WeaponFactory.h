@@ -7,10 +7,6 @@
 
 #include "Weapon.h"
 
-enum class WeaponType {
-     MachineGun, LaserGun,Bazooka
-};
-
 class WeaponFactory {
 public:
     virtual Weapon *

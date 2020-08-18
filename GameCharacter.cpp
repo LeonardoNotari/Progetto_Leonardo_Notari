@@ -31,6 +31,14 @@ int GameCharacter::getEnergy() const {
     return this->energy;
 }
 
+float GameCharacter::getXMax() const {
+    return this->xMax;
+}
+
+float GameCharacter::getXMin() const {
+    return this->xMin;
+}
+
 void GameCharacter::move(float x, float y) {
     posX += x;
     posY += y;

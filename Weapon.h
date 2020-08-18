@@ -6,7 +6,9 @@
 #define PROGETTO_LEONARDO_NOTARI_WEAPON_H
 
 #include <SFML/Graphics.hpp>
-
+enum class WeaponType {
+    MachineGun, LaserGun, Bazooka, Common
+};
 
 class Weapon {
 public:
@@ -14,7 +16,7 @@ public:
     explicit Weapon(int basicWeaponPower, int weaponCadence, int weaponRange);
 
     Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY, sf::Sprite weaponSprite, int weaponCadence,
-           int weaponRange, int weaponBullet);
+           int weaponRange, int weaponBullet, WeaponType weaponType);
 
     int getWeaponCost() const;
 
@@ -35,6 +37,8 @@ public:
     bool equip {false};
 
     sf::Sprite sprite;
+
+    WeaponType type;
 
 protected:
     int bullet;

@@ -33,7 +33,7 @@ Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf:
     }
     sf::Sprite W;
     W.setTexture(weaponTexture);
-    weapon = new Weapon(power, cost, x, y, W, cadence, range, bullets);
+    weapon = new Weapon(power, cost, x, y, W, cadence, range, bullets,type);
     weapon->sprite.setPosition(sf::Vector2f(x, y));
     return weapon;
 }

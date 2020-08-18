@@ -6,13 +6,13 @@
 
 
   Weapon::Weapon(int basicWeaponPower, int weaponCadence, int weaponRange) : power(basicWeaponPower), cost(0),
-                                                                           cadence(weaponCadence), range(weaponRange),bullet(-1){}
+                                                                           cadence(weaponCadence), range(weaponRange),bullet(-1),type(WeaponType::Common){}
 
 Weapon::Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY, sf::Sprite weaponSprite,
-               int weaponCadence, int weaponRange, int weaponBullet) : power(weaponPower), cost(weaponCost),
+               int weaponCadence, int weaponRange, int weaponBullet,WeaponType weaponType) : power(weaponPower), cost(weaponCost),
                                                                        posX(weaponX), posY(weaponY),sprite(std::move(weaponSprite))
                                                                        ,cadence(weaponCadence), range(weaponRange),
-                                                                       bullet(weaponBullet){}
+                                                                       bullet(weaponBullet),type(weaponType){}
 
 int Weapon::getWeaponCost() const {
     return this->cost;
