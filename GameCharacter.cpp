@@ -47,7 +47,3 @@ void GameCharacter::move(float x, float y) {
 void GameCharacter::setEnergy(int increment){
     this->energy+=increment;
 }
-
-void GameCharacter::setHP(int increment){
-    this->HP+=increment;
-}

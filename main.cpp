@@ -8,7 +8,9 @@
 #include "Weapon.h"
 #include "bullet.h"
 #include "TileMap.h"
+#include "Tile.h"
 #include "EnemyFactory.h"
+#include "TileFactory.h"
 #include "BulletFactory.h"
 #include "WeaponFactory.h"
 
@@ -42,9 +44,19 @@ GameEvent getEvent(int &cycles, int cadence) {
     return GameEvent::noop;
 }
 
+float generateCasualX() {
+    srand(time(nullptr));
+    return rand() % 8096;
+}
+
+float generateCasualY() {
+    srand(time(nullptr));
+    return rand() % 768;
+}
+
 float generateCasualNumber() {
     srand(time(nullptr));
-    return rand() % 800+300;
+    return rand() % 10;
 }
 
 
@@ -110,11 +122,11 @@ PowerUp * createPowerUp(PowerUpType type,const sf::Texture & itemTexture){
     sf::Sprite P;
     if (type == PowerUpType::Energy) {
         P.setTexture(itemTexture);
-        powerUp = new PowerUp(generateCasualNumber(),generateCasualNumber(),100,P,type);
+        powerUp = new PowerUp(generateCasualX(),generateCasualY(),100,P,type);
     }
     if (type == PowerUpType::Life) {
         P.setTexture(itemTexture);
-        powerUp = new PowerUp(generateCasualNumber(),generateCasualNumber(),100,P,type);
+        powerUp = new PowerUp(generateCasualX(),generateCasualY(),100,P,type);
     }
     powerUp->sprite.setPosition(sf::Vector2f(powerUp->getX(), powerUp->getY()));
     return powerUp;
@@ -175,13 +187,14 @@ int main() {
     float enemyDefeated = 0;
     int numberOfCycles = 0;
     int casualNumber;
+    std::vector<Tile *> tiles;
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Volcan Battle");
     // define the level with an array of tile indices
 
 
     // create the tilemap from the level definition
     TileMap map;
-    if (!map.load("image/image1.png",sf::Vector2u(64, 64), "matrice.txt", 64, 12))
+    if (!map.load("image/image00.png",sf::Vector2u(64, 64), "matrice.txt", 128, 12,tiles))
         return -1;
 
     // *********background
@@ -192,7 +205,7 @@ int main() {
     sf::Sprite sf;
     sf.setTexture(sfondo);
     sf.setTextureRect(sf::IntRect(0, 0, 1024, 512));
-    //************* end background
+    ************* end background
      */
 
 
@@ -243,12 +256,10 @@ int main() {
     sf::Texture BulletLaser;
     BulletLaser.loadFromFile("image/projectile.png");
     std::list<bullet *> bullets;
-
-
-
     EnemyFactory factoryE;
     BulletFactory factoryB;
     WeaponFactory factoryW;
+    TileFactory factoryT;
     //************* GAMELOOP
     while (window.isOpen()) {
         //VISTA MAPPA
@@ -258,13 +269,11 @@ int main() {
         if (enemies.size() < maxNumberOfEnemy) {
             if (numberOfCycles >= spawnEnemy) {
                 if (static_cast<int>(generateCasualNumber()) % 2 == 0) {
-                    enemies.push_back(factoryE.createEnemy(EnemyType::Kamikaze, enemyTexture, generateCasualNumber(),
-                                                           generateCasualNumber(),
-                                                           (generateCasualNumber() / 40000) * maxNumberOfEnemy));
+                    enemies.push_back(factoryE.createEnemy(EnemyType::Kamikaze, enemyTexture, generateCasualY(),generateCasualX(),((generateCasualNumber() / 100) + (maxNumberOfEnemy/100))));
                 } else
-                    enemies.push_back(factoryE.createEnemy(EnemyType::Common, enemyTexture1, generateCasualNumber(),
-                                                           generateCasualNumber(),
-                                                           (generateCasualNumber() / 40000) * maxNumberOfEnemy));
+                    enemies.push_back(factoryE.createEnemy(EnemyType::Common, enemyTexture1, generateCasualX(),
+                                                           generateCasualY(),
+                                                           ((generateCasualNumber() / 100) + (maxNumberOfEnemy/100))));
                 numberOfCycles = 0;
             }
         }
@@ -295,15 +304,15 @@ int main() {
             casualNumber=static_cast<int>(generateCasualNumber());
             if (casualNumber % 5 == 0)
                 weapons.push_back(
-                        factoryW.createWeapon(WeaponType::Bazooka, generateCasualNumber(), generateCasualNumber(),
+                        factoryW.createWeapon(WeaponType::Bazooka, generateCasualX(), generateCasualY(),
                                               bazookaTexture));
             if (casualNumber % 5 == 1)
                 weapons.push_back(
-                        factoryW.createWeapon(WeaponType::MachineGun, generateCasualNumber(), generateCasualNumber(),
+                        factoryW.createWeapon(WeaponType::MachineGun, generateCasualX(), generateCasualY(),
                                               machineGunTexture));
             if (casualNumber % 5 == 2)
                 weapons.push_back(
-                        factoryW.createWeapon(WeaponType::LaserGun, generateCasualNumber(), generateCasualNumber(),
+                        factoryW.createWeapon(WeaponType::LaserGun, generateCasualX(), generateCasualY(),
                                               laserGunTexture));
             if (casualNumber % 5 == 3)
                 items.push_back(createPowerUp(PowerUpType::Life, lifeTexture));

@@ -26,8 +26,6 @@ public:
 
     void move(float x, float y) override;
 
-    void setHP(int increment);
-
     void setEnergy(int incremento);
 
 protected:
@@ -36,7 +34,7 @@ protected:
     int energy;
     //int freeEnergy {energy}; FIXME se si vuole poter equipaggiare piu armi
     std::string name;
-    float xMax{4048};
+    float xMax{8192};
     float xMin{0};
 };
 

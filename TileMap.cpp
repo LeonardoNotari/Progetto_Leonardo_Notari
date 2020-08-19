@@ -14,7 +14,7 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 }
 
 
-bool TileMap::load(const std::string &tileimg,sf::Vector2u tileSize, const std::string &leveltxt, unsigned int width, unsigned int height)
+bool TileMap::load(const std::string &tileimg,sf::Vector2u tileSize, const std::string &leveltxt, unsigned int width, unsigned int height,std::vector<Tile *> tiles)
 {
     std::ifstream inputFile (leveltxt, std::ifstream::in);
     std::vector<std::string> myVector;
