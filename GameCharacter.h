@@ -14,6 +14,8 @@ public:
 
     GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite);
 
+    ~GameCharacter();
+
     void equipWeapon(Weapon *weapon);
 
     Weapon *getWeapon() const;

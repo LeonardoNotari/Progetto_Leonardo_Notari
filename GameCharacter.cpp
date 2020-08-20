@@ -9,6 +9,10 @@
 
 GameCharacter::GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite) : Character(gameCharacterHP,gameCharacterX,gameCharacterY,std::move(playerSprite)),energy(spaceshipEnergy) {}
 
+GameCharacter::~GameCharacter(){//FIXME
+    delete this->weapon;
+}
+
 bool GameCharacter::isPossibleEquipWeapon(int cost) const {
     if (cost <= this->energy) {
         return true;

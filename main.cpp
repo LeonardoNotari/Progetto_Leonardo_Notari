@@ -154,9 +154,9 @@ void enemyControl(GameCharacter &player,
 //MOVIMENTO E CONTROLLO POSIZIONE DEI PROIETTILI
 void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &enemies) {
     if (bullet->bulletVerse)
-        bullet->move(1);
+        bullet->move(1.5);
     else
-        bullet->move(-1);
+        bullet->move(-1.5);
     bullet->sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
     if (player.getX() >= bullet->bulletY - 0.5 && player.getY() <= bullet->bulletY + 0.5 &&
         player.getX() >= bullet->bulletX - 0.5 && player.getX() <= bullet->bulletX + 0.5)
@@ -173,14 +173,14 @@ void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &e
 int main() {
     //SET GAME VALUES
     int spaceshipEnergy = 100, spaceshipHP = 50000;
-    float playerSpeed=0.3;
+    float playerSpeed=1.2;
     float playerX=512,playerY=384;
-    int basicWeaponPower = 50, basicWeaponCadence = 300, basicWeaponRange = 500;
+    int basicWeaponPower = 50, basicWeaponCadence = 200, basicWeaponRange = 500;
     bool verse = true;
     bool enemyBulletVerse, enemyHasWeapon;
-    int enemyBulletRange = 500, enemyBulletCount = 0, cadenceEnemyBullet = 150;
+    int enemyBulletRange = 500, enemyBulletCount = 0, cadenceEnemyBullet = 100;
     int fireCount = 0;
-    int spawnEnemy = 1000;
+    int spawnEnemy = 500;
     float maxNumberOfEnemy = 1;
     bool drawExplosion = false;
     int lifeOfExplosion = 0;
@@ -194,9 +194,11 @@ int main() {
 
     // create the tilemap from the level definition
     TileMap map;
-    if (!map.load("image/image00.png",sf::Vector2u(64, 64), "matrice.txt", 128, 12,tiles))
+    if (!map.readMatrix( "image/image00.png","matrice.txt",tiles))
         return -1;
 
+    if (!map.loadMap(sf::Vector2u(64, 64),  128, 12,tiles))
+        return -1;
     // *********background
     /*
     sf::Texture sfondo;
@@ -259,9 +261,10 @@ int main() {
     EnemyFactory factoryE;
     BulletFactory factoryB;
     WeaponFactory factoryW;
-    TileFactory factoryT;
     //************* GAMELOOP
     while (window.isOpen()) {
+        if (!map.loadMap(sf::Vector2u(64, 64),  128, 12,tiles))
+            return -1;
         //VISTA MAPPA
         sf::View view0(sf::Vector2f(player.getX(),384),sf::Vector2f(1024,764));
 

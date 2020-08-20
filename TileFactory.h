@@ -4,13 +4,14 @@
 
 #ifndef PROGETTO_LEONARDO_NOTARI__TILEFACTORY_H
 #define PROGETTO_LEONARDO_NOTARI__TILEFACTORY_H
+#include "Tile.h"
 enum class TileType{
     lavaTile,topRockTile,tipsRockTile,backgroundTile
 };
 
 class TileFactory {
 public:
-    virtual Tile *createTile(TileType type, float x, float y);
+    virtual Tile *createTile(TileType type,std::string tileCode,float xTopDx,float yTopDx);
 };
 
 

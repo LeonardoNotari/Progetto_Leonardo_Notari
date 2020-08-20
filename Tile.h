@@ -7,8 +7,10 @@
 #include <iostream>
 class Tile {
 public:
-    Tile(bool tileCrossable,bool tileDestructible,int damage);
+    Tile(bool tileCrossable,bool tileDestructible,int damage,std::string tileCode,float xTopDx,float yTopDx);
     std::string code;
+    float xVertexTopDx;
+    float yVertexTopDx;
 private:
     bool crossable;
     bool destructible;

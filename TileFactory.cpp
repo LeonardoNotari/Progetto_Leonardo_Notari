@@ -4,8 +4,10 @@
 #include "Tile.h"
 #include "TileFactory.h"
 
+#include <utility>
 
-Tile *TileFactory::createTile(TileType type, float x, float y) {
+
+Tile *TileFactory::createTile(TileType type,std::string tileCode,float xTopDx,float yTopDx) {
     Tile *tile;
     bool crossable,destructible;
     int damage;
@@ -29,6 +31,6 @@ Tile *TileFactory::createTile(TileType type, float x, float y) {
         crossable = true;
         damage = 0;
     }
-    tile = new Tile(crossable,destructible,damage);
+    tile = new Tile(crossable,destructible,damage,std::move(tileCode),xTopDx,yTopDx);
     return tile;
 }
