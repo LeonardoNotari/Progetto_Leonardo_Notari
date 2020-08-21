@@ -12,8 +12,8 @@ TEST(GameCharacter, EquipWeapon) {
     sf::Texture playerTexture;
     sf::Sprite spriteTest;
     spriteTest.setTexture(playerTexture);
-    GameCharacter player(100,0,0,0,spriteTest);
-    Weapon gun(9,0,0,0, spriteTest,0,0,0);
+    GameCharacter player(100, 0, 0, 0, spriteTest);
+    Weapon gun(9, 0, 0, 0, spriteTest, 0, 0, 0);
     player.equipWeapon(gun.getWeaponCost(), &gun);
     ASSERT_EQ(player.getWeapon()->getWeaponPower(), 9);
 }
@@ -22,7 +22,7 @@ TEST(GameCharacter, Move) {
     sf::Texture playerTexture;
     sf::Sprite spriteTest;
     spriteTest.setTexture(playerTexture);
-    GameCharacter player(8, 0,0,0,spriteTest);
+    GameCharacter player(8, 0, 0, 0, spriteTest);
     player.move(0, 1);
     player.move(1, 0);
     player.move(1, 0);
@@ -35,11 +35,11 @@ TEST(GameCharacter, Move) {
 TEST(GameCharacter, ReceivedDamage) {
     sf::Texture playerTexture;
     sf::Sprite spriteTest;
-    bool a=false;
+    bool a = false;
     spriteTest.setTexture(playerTexture);
-    GameCharacter player(200,2,2, 10,spriteTest);
-    KamikazeEnemy alien(1, 0,0,100, 9,spriteTest);
-    alien.attack(player,a);
+    GameCharacter player(200, 2, 2, 10, spriteTest);
+    KamikazeEnemy alien(1, 0, 0, 100, 9, spriteTest);
+    alien.attack(player, a);
     ASSERT_EQ(100, player.getHP());
 }
 

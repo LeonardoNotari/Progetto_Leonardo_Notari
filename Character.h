@@ -9,13 +9,20 @@
 
 class Character {
 public:
-    Character(int hp,float x,float y,sf::Sprite characterSprite);
+    Character(int hp, float x, float y, sf::Sprite characterSprite);
+
     virtual ~Character();
-    virtual void move(float x,float y)=0;
+
+    virtual void move(float x, float y) = 0;
+
     float getX() const;
+
     float getY() const;
+
     int getHP() const;
+
     void receiveDamage(int damage);
+
     sf::Sprite sprite;
 protected:
     float posX;

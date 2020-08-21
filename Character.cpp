@@ -4,21 +4,22 @@
 
 #include "Character.h"
 
-Character::Character(int hp,float x,float y,sf::Sprite characterSprite):HP(hp),posX(x),posY(y),sprite(std::move(characterSprite)){}
+Character::Character(int hp, float x, float y, sf::Sprite characterSprite) : HP(hp), posX(x), posY(y),
+                                                                             sprite(std::move(characterSprite)) {}
 
-Character::~Character(){
+Character::~Character() {
     delete this;
 }
 
-float Character::getX() const{
+float Character::getX() const {
     return this->posX;
 }
 
-float Character::getY() const{
+float Character::getY() const {
     return this->posY;
 }
 
-int Character::getHP() const{
+int Character::getHP() const {
     return this->HP;
 }
 

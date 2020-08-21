@@ -7,30 +7,30 @@
 #include <utility>
 
 
-Tile *TileFactory::createTile(TileType type,std::string tileCode,float xTopDx,float yTopDx) {
+Tile *TileFactory::createTile(TileType type, std::string tileCode, float xTopSx, float yTopSx) {
     Tile *tile;
-    bool crossable,destructible;
+    bool crossable, destructible;
     int damage;
     if (type == TileType::topRockTile) {
         destructible = false;
         crossable = false;
-        damage = 10;
+        damage = 0;
     }
     if (type == TileType::tipsRockTile) {
         destructible = true;
         crossable = false;
-        damage = 50;
+        damage = 1;
     }
     if (type == TileType::lavaTile) {
         destructible = false;
         crossable = true;
-        damage = 1000;
+        damage = 50;
     }
     if (type == TileType::backgroundTile) {
         destructible = false;
         crossable = true;
         damage = 0;
     }
-    tile = new Tile(crossable,destructible,damage,std::move(tileCode),xTopDx,yTopDx);
+    tile = new Tile(crossable, destructible, damage, std::move(tileCode), xTopSx, yTopSx);
     return tile;
 }

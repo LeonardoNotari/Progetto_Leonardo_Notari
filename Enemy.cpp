@@ -7,11 +7,10 @@
 #include <utility>
 
 
-Enemy::Enemy(int enemyHP,float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite) : Character(enemyHP,enemyX,enemyY,std::move(enemySprite)),
-                                                                                                     damage(enemyPower),
-                                                                                                     speed(enemySpeed){}
-
-
+Enemy::Enemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite)
+        : Character(enemyHP, enemyX, enemyY, std::move(enemySprite)),
+          damage(enemyPower),
+          speed(enemySpeed) {}
 
 
 int Enemy::getEnemyDamage() const {

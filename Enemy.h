@@ -10,10 +10,10 @@
 #include "Character.h"
 
 
-class Enemy: public Character{
+class Enemy : public Character {
 public:
 
-    Enemy(int enemyHP,float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
+    Enemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
 
     void move(float gamecharacterX, float gamecharacterY) override = 0;
 

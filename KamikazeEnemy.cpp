@@ -6,7 +6,9 @@
 #include "Character.h"
 #include "GameCharacter.h"
 
-KamikazeEnemy::KamikazeEnemy(int enemyHP,float enemyX, float enemyY, int enemyPower, float enemySpeed, const sf::Sprite& enemySprite):Enemy(enemyHP,enemyX,enemyY,enemyPower,enemySpeed,enemySprite){}
+KamikazeEnemy::KamikazeEnemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed,
+                             const sf::Sprite &enemySprite) : Enemy(enemyHP, enemyX, enemyY, enemyPower, enemySpeed,
+                                                                    enemySprite) {}
 
 void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX)

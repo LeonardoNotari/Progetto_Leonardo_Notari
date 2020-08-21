@@ -7,9 +7,11 @@
 #include "Weapon.h"
 
 
-GameCharacter::GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite) : Character(gameCharacterHP,gameCharacterX,gameCharacterY,std::move(playerSprite)),energy(spaceshipEnergy) {}
+GameCharacter::GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
+                             sf::Sprite playerSprite) : Character(gameCharacterHP, gameCharacterX, gameCharacterY,
+                                                                  std::move(playerSprite)), energy(spaceshipEnergy) {}
 
-GameCharacter::~GameCharacter(){//FIXME
+GameCharacter::~GameCharacter() {//FIXME
     delete this->weapon;
 }
 
@@ -23,7 +25,7 @@ bool GameCharacter::isPossibleEquipWeapon(int cost) const {
 void GameCharacter::equipWeapon(Weapon *gun) {
     if (this->isPossibleEquipWeapon(gun->getWeaponCost())) {
         this->weapon = gun;
-        gun->equip=true;
+        gun->equip = true;
     }
 }
 
@@ -44,10 +46,25 @@ float GameCharacter::getXMin() const {
 }
 
 void GameCharacter::move(float x, float y) {
-    posX += x;
-    posY += y;
+    if (this->posX + x > xMin && this->posX + x < xMax - 60)
+        posX += x;
+    if (this->posY + y > xMin - 15 && this->posY + y < yMax - 45)
+        posY += y;
 }
 
-void GameCharacter::setEnergy(int increment){
-    this->energy+=increment;
+void GameCharacter::setEnergy(int increment) {
+    this->energy += increment;
+}
+
+bool GameCharacter::isLegalMove(std::vector<Tile *> tiles, float x, float y) {
+    auto it = tiles.begin();
+    Tile *tile;
+    tile = *it;
+    while (this->posX + x < tile->xVertexTopSx || this->posX + x > tile->xVertexTopSx + 64 ||
+           this->posY + y < tile->yVertexTopSx || this->posY + y > tile->yVertexTopSx + 64) {
+        it++;
+        tile = *it;
+    }
+    receiveDamage(tile->getDamage());
+    return tile->getIsCrossable();
 }

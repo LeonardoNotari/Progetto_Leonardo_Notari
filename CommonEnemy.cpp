@@ -8,7 +8,9 @@
 #include "GameCharacter.h"
 
 
-CommonEnemy::CommonEnemy(int enemyHP,float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite) : Enemy(enemyHP,enemyX,enemyY,enemyPower,enemySpeed,std::move(enemySprite)){}
+CommonEnemy::CommonEnemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed,
+                         sf::Sprite enemySprite) : Enemy(enemyHP, enemyX, enemyY, enemyPower, enemySpeed,
+                                                         std::move(enemySprite)) {}
 
 void CommonEnemy::move(float gamecharacterX, float gamecharacterY) {
     if (posX < gamecharacterX - 200 || (posX > gamecharacterX && posX < gamecharacterX + 200)) {

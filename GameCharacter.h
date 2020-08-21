@@ -7,14 +7,16 @@
 
 #include <iostream>
 #include "Weapon.h"
+#include "Tile.h"
 #include "Character.h"
 
-class GameCharacter: public Character {
+class GameCharacter : public Character {
 public:
 
-    GameCharacter(int gameCharacterHP,float gameCharacterX,float gameCharacterY, int spaceshipEnergy, sf::Sprite playerSprite);
+    GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
+                  sf::Sprite playerSprite);
 
-    ~GameCharacter();
+    ~GameCharacter() override;
 
     void equipWeapon(Weapon *weapon);
 
@@ -30,14 +32,18 @@ public:
 
     void setEnergy(int incremento);
 
+    bool isLegalMove(std::vector<Tile *> tiles, float x, float y);
+
 protected:
     bool isPossibleEquipWeapon(int cost) const;
+
     Weapon *weapon{nullptr};
     int energy;
     //int freeEnergy {energy}; FIXME se si vuole poter equipaggiare piu armi
     std::string name;
     float xMax{8192};
-    float xMin{0};
+    float xMin{20};
+    float yMax{768};
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

@@ -5,19 +5,26 @@
 
 #include <utility>
 
-PowerUp::PowerUp(float x, float y, int increment, sf::Sprite itemSprite,PowerUpType itemType):posX(x),posY(y),effect(increment),sprite(std::move(itemSprite)),type(itemType),used(false) {}
+PowerUp::PowerUp(float x, float y, int increment, sf::Sprite itemSprite, PowerUpType itemType) : posX(x), posY(y),
+                                                                                                 effect(increment),
+                                                                                                 sprite(std::move(
+                                                                                                         itemSprite)),
+                                                                                                 type(itemType),
+                                                                                                 used(false) {}
 
-int PowerUp::getEffect() const {{
-    return this->effect;
-}}
+int PowerUp::getEffect() const {
+    {
+        return this->effect;
+    }
+}
 
 float PowerUp::getX() const {
-        return this->posX;
-    }
+    return this->posX;
+}
 
 float PowerUp::getY() const {
-        return this->posY;
-    }
+    return this->posY;
+}
 
 PowerUpType PowerUp::getType() const {
     return this->type;

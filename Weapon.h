@@ -6,6 +6,7 @@
 #define PROGETTO_LEONARDO_NOTARI_WEAPON_H
 
 #include <SFML/Graphics.hpp>
+
 enum class WeaponType {
     MachineGun, LaserGun, Bazooka, Common
 };
@@ -34,7 +35,7 @@ public:
 
     int getWeaponRange() const;
 
-    bool equip {false};
+    bool equip{false};
 
     sf::Sprite sprite;
 
