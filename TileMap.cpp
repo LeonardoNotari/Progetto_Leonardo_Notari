@@ -27,13 +27,13 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
         std::stringstream stream(auxString);
         while (std::getline(stream, auxString, ';')) {
             //FIXME PROVA NUOVO VETTORE DI TILES
-            if (auxString == " 0" || auxString == " 1" || auxString == " 8" || auxString == " 9")
+            if (auxString == " 2" || auxString == " 0" || auxString == " 1" || auxString == " 8" || auxString == " 9")
                 tiles.push_back(factoryT.createTile(TileType::topRockTile, auxString, x, y));
             if (auxString == " 4" || auxString == " 5" || auxString == " 6")
                 tiles.push_back(factoryT.createTile(TileType::lavaTile, auxString, x, y));
             if (auxString == "13")
                 tiles.push_back(factoryT.createTile(TileType::backgroundTile, auxString, x, y));
-            if (auxString == " 2" || auxString == " 3" || auxString == " 7" || auxString == "10")
+            if (auxString == " 3" || auxString == " 7" || auxString == "10")
                 tiles.push_back(factoryT.createTile(TileType::tipsRockTile, auxString, x, y));
 
             x += 64;

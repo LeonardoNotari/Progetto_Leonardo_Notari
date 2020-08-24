@@ -7,7 +7,7 @@
 #include "WeaponFactory.h"
 
 
-Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture) {
+Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture,int level) {
     Weapon *weapon;
     int bullets, cadence, range, power, cost;
     if (type == WeaponType::MachineGun) {
@@ -15,25 +15,25 @@ Weapon *WeaponFactory::createWeapon(WeaponType type, float x, float y, const sf:
         cadence = 50;
         range = 300;
         power = 100;
-        cost = 200;
+        cost = 100;
     }
     if (type == WeaponType::Bazooka) {
         bullets = 50;
         cadence = 500;
         range = 2000;
         power = 2000;
-        cost = 200;
+        cost = 100;
     }
     if (type == WeaponType::LaserGun) {
         bullets = 1000;
         cadence = 5;
-        range = 800;
-        power = 20;
-        cost = 200;
+        range = 300;
+        power = 30;
+        cost = 100;
     }
     sf::Sprite W;
     W.setTexture(weaponTexture);
-    weapon = new Weapon(power, cost, x, y, W, cadence, range, bullets, type);
+    weapon = new Weapon(power*level, cost*level, x, y, W, cadence, range, bullets, type);
     weapon->sprite.setPosition(sf::Vector2f(x, y));
     return weapon;
 }

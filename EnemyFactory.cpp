@@ -8,15 +8,15 @@
 #include "EnemyFactory.h"
 
 
-Enemy *EnemyFactory::createEnemy(EnemyType type, const sf::Texture &enemyTexture, float X, float Y, float speed) {
+Enemy *EnemyFactory::createEnemy(EnemyType type, const sf::Texture &enemyTexture, float X, float Y, float speed,int level) {
     Enemy *enemy = nullptr;
     sf::Sprite E;
     if (type == EnemyType::Kamikaze) {
         E.setTexture(enemyTexture);
-        enemy = new KamikazeEnemy(100, X, Y, 500, speed, E);
+        enemy = new KamikazeEnemy(100*level, X, Y, 500, speed, E);
     } else if (type == EnemyType::Common) {
         E.setTexture(enemyTexture);
-        enemy = new CommonEnemy(300, X, Y, 50, speed, E);
+        enemy = new CommonEnemy(300*level, X, Y, 50, speed, E);
     }
     enemy->sprite.setPosition(sf::Vector2f(enemy->getX(), enemy->getY()));
     return enemy;

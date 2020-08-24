@@ -11,10 +11,6 @@ GameCharacter::GameCharacter(int gameCharacterHP, float gameCharacterX, float ga
                              sf::Sprite playerSprite) : Character(gameCharacterHP, gameCharacterX, gameCharacterY,
                                                                   std::move(playerSprite)), energy(spaceshipEnergy) {}
 
-GameCharacter::~GameCharacter() {//FIXME
-    delete this->weapon;
-}
-
 bool GameCharacter::isPossibleEquipWeapon(int cost) const {
     if (cost <= this->energy) {
         return true;
@@ -45,26 +41,23 @@ float GameCharacter::getXMin() const {
     return this->xMin;
 }
 
-void GameCharacter::move(float x, float y) {
-    if (this->posX + x > xMin && this->posX + x < xMax - 60)
-        posX += x;
-    if (this->posY + y > xMin - 15 && this->posY + y < yMax - 45)
-        posY += y;
+void GameCharacter::move(float x, float y,std::vector<Tile *> tiles) {
+    if(isLegalMove(tiles,x,y)) {
+        if (this->posX + x > xMin && this->posX + x < xMax - 60)
+            posX += x;
+        if (this->posY + y > xMin - 15 && this->posY + y < yMax - 45)
+            posY += y;
+    }
 }
 
 void GameCharacter::setEnergy(int increment) {
     this->energy += increment;
 }
 
-bool GameCharacter::isLegalMove(std::vector<Tile *> tiles, float x, float y) {
-    auto it = tiles.begin();
-    Tile *tile;
-    tile = *it;
-    while (this->posX + x < tile->xVertexTopSx || this->posX + x > tile->xVertexTopSx + 64 ||
-           this->posY + y < tile->yVertexTopSx || this->posY + y > tile->yVertexTopSx + 64) {
-        it++;
-        tile = *it;
-    }
-    receiveDamage(tile->getDamage());
-    return tile->getIsCrossable();
+void GameCharacter::reset(int playerEnergy,int hp,float x,float y){
+    this->energy=playerEnergy;
+    this->HP=1000;
+    this->posX=x;
+    this->posY=y;
+    this->weapon= nullptr;
 }

@@ -10,15 +10,26 @@ KamikazeEnemy::KamikazeEnemy(int enemyHP, float enemyX, float enemyY, int enemyP
                              const sf::Sprite &enemySprite) : Enemy(enemyHP, enemyX, enemyY, enemyPower, enemySpeed,
                                                                     enemySprite) {}
 
-void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY) {
-    if (posX < gamecharacterX)
-        posX += speed;
-    else
-        posX -= speed;
-    if (posY < gamecharacterY)
-        posY += speed;
-    else
-        posY -= speed;
+void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY,std::vector<Tile *> tiles) {
+    if (isLegalMove(tiles, speed, 0)) {
+        if (posX < gamecharacterX)
+            posX += speed;
+        else
+            posX -= speed;
+        if (posY < gamecharacterY)
+            posY += speed;
+        else
+            posY -= speed;
+    }else{
+        if (posX > gamecharacterX)
+            posX += speed;
+        else
+            posX -= speed;
+        if (posY < gamecharacterY)
+            posY += speed;
+        else
+            posY -= speed;
+    }
 }
 
 void KamikazeEnemy::attack(GameCharacter &player, bool &enemyHasWeapon) {

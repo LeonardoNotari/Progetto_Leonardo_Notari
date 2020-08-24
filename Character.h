@@ -13,7 +13,7 @@ public:
 
     virtual ~Character();
 
-    virtual void move(float x, float y) = 0;
+    virtual void move(float x, float y,std::vector<Tile *> tiles) = 0;
 
     float getX() const;
 
@@ -24,7 +24,9 @@ public:
     void receiveDamage(int damage);
 
     sf::Sprite sprite;
+
 protected:
+    bool isLegalMove(std::vector<Tile *> tiles, float x, float y);
     float posX;
     float posY;
     int HP;

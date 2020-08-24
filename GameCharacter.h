@@ -16,8 +16,6 @@ public:
     GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
                   sf::Sprite playerSprite);
 
-    ~GameCharacter() override;
-
     void equipWeapon(Weapon *weapon);
 
     Weapon *getWeapon() const;
@@ -28,11 +26,11 @@ public:
 
     float getXMin() const;
 
-    void move(float x, float y) override;
+    void move(float x, float y,std::vector<Tile *> tiles) override;
 
     void setEnergy(int incremento);
 
-    bool isLegalMove(std::vector<Tile *> tiles, float x, float y);
+    void reset(int playerEnergy,int hp,float x,float y);
 
 protected:
     bool isPossibleEquipWeapon(int cost) const;
