@@ -20,8 +20,11 @@ public:
     void destroyTile();
 
     std::string code;
+
     float xVertexTopSx;
+
     float yVertexTopSx;
+
 private:
     bool crossable;
     bool destructible;

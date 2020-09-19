@@ -6,6 +6,7 @@
 #define PROGETTO_LEONARDO_NOTARI__CHARACTER_H
 
 #include <SFML/Graphics.hpp>
+#include "TileMap.h"
 
 class Character {
 public:
@@ -13,7 +14,7 @@ public:
 
     virtual ~Character();
 
-    virtual void move(float x, float y,std::vector<Tile *> tiles) = 0;
+    virtual void move(float x, float y,const TileMap& map) = 0;
 
     float getX() const;
 
@@ -26,7 +27,6 @@ public:
     sf::Sprite sprite;
 
 protected:
-    bool isLegalMove(std::vector<Tile *> tiles, float x, float y);
     float posX;
     float posY;
     int HP;

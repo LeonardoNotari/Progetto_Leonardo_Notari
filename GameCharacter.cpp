@@ -41,13 +41,15 @@ float GameCharacter::getXMin() const {
     return this->xMin;
 }
 
-void GameCharacter::move(float x, float y,std::vector<Tile *> tiles) {
-    if(isLegalMove(tiles,x,y)) {
+void GameCharacter::move(float x, float y,const TileMap& map) {
+    int damage=0;
+    if(map.isLegalMove(this->posX,this->posY,x,y,damage)) {
         if (this->posX + x > xMin && this->posX + x < xMax - 60)
             posX += x;
         if (this->posY + y > xMin - 15 && this->posY + y < yMax - 45)
             posY += y;
     }
+    this->receiveDamage(damage);
 }
 
 void GameCharacter::setEnergy(int increment) {

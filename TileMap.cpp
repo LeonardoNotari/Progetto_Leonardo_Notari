@@ -15,7 +15,7 @@ void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 
-bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt, std::vector<Tile *> &tiles) {
+bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt) {
     std::ifstream inputFile(leveltxt, std::ifstream::in);
     std::string auxString;
     TileFactory factoryT;
@@ -28,13 +28,13 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
         while (std::getline(stream, auxString, ';')) {
             //FIXME PROVA NUOVO VETTORE DI TILES
             if (auxString == " 2" || auxString == " 0" || auxString == " 1" || auxString == " 8" || auxString == " 9")
-                tiles.push_back(factoryT.createTile(TileType::topRockTile, auxString, x, y));
+                this->tiles.push_back(factoryT.createTile(TileType::topRockTile, auxString, x, y));
             if (auxString == " 4" || auxString == " 5" || auxString == " 6")
-                tiles.push_back(factoryT.createTile(TileType::lavaTile, auxString, x, y));
+                this->tiles.push_back(factoryT.createTile(TileType::lavaTile, auxString, x, y));
             if (auxString == "13")
-                tiles.push_back(factoryT.createTile(TileType::backgroundTile, auxString, x, y));
+                this->tiles.push_back(factoryT.createTile(TileType::backgroundTile, auxString, x, y));
             if (auxString == " 3" || auxString == " 7" || auxString == "10")
-                tiles.push_back(factoryT.createTile(TileType::tipsRockTile, auxString, x, y));
+                this->tiles.push_back(factoryT.createTile(TileType::tipsRockTile, auxString, x, y));
 
             x += 64;
             if (x == 8192) {
@@ -46,11 +46,11 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
     return true;
 }
 
-bool TileMap::loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int height, std::vector<Tile *> &tiles) {
+bool TileMap::loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int height) {
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
     // populate the vertex array, with one quad per tile
-    auto it = tiles.begin();
+    auto it = this->tiles.begin();
     Tile *tile;
     for (unsigned int i = 0; i < height; i++) {
         for (unsigned int j = 0; j < width; j++) {
@@ -80,4 +80,17 @@ bool TileMap::loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int he
         }
     }
     return true;
+}
+
+bool TileMap::isLegalMove(float characterX,float characterY,float x, float y,int& damage) const{
+    auto it = this->tiles.begin();
+    Tile *tile;
+    tile = *it;
+    while (characterX+20 + x < tile->xVertexTopSx || (characterX+20) + x > tile->xVertexTopSx + 64 ||
+            (characterY+30) + y < tile->yVertexTopSx || (characterY+30) + y > tile->yVertexTopSx + 64){
+        tile = *it;
+        it++;
+    }
+    damage=tile->getDamage();
+    return tile->getIsCrossable();
 }

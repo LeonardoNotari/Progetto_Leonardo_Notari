@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <SFML/Graphics.hpp>
-#include <utility>
 #include "PowerUp.h"
 #include "GameCharacter.h"
 #include "Weapon.h"
@@ -61,26 +60,25 @@ float generateCasualNumber() {
 
 
 void updateGame(const GameEvent &gameEvent, GameCharacter &player, BulletFactory factory,
-                bool &verse,
-                const sf::Texture &bulletTexture, const sf::Texture &bulletTexture1, std::list<bullet *> &bullets,
-                const std::vector<Tile *>& tiles, float playerSpeed) {
+                bool &verse,const sf::Texture &bulletTexture, const sf::Texture &bulletTexture1,
+                std::list<bullet *> &bullets, float playerSpeed,const TileMap& map) {
     switch (gameEvent) {
         case GameEvent::up: {
-            player.move(0, -playerSpeed,tiles);
+            player.move(0, -playerSpeed,map);
             break;
         }
         case GameEvent::left: {
             verse = false;
-            player.move(-playerSpeed, 0,tiles);
+            player.move(-playerSpeed, 0,map);
             break;
         }
         case GameEvent::down: {
-            player.move(0, playerSpeed,tiles);
+            player.move(0, playerSpeed,map);
             break;
         }
         case GameEvent::right: {
             verse = true;
-            player.move(playerSpeed, 0,tiles);
+            player.move(playerSpeed, 0,map);
             break;
         }
         case GameEvent::fire: {
@@ -139,12 +137,20 @@ PowerUp *createPowerUp(PowerUpType type, const sf::Texture &itemTexture) {
 
 // MOVIMENTO E CONTROLLO POSIZIONE NEMICI
 void enemyControl(GameCharacter &player,
-                  Enemy *enemy, bool &enemyHasWeapon,std::vector<Tile *> tiles) {//controllo delle posizioni
+                  Enemy *enemy, bool &enemyHasWeapon,const TileMap& map) {//controllo delle posizioni
     float gameCharacterX, gameCharacterY;
     enemyHasWeapon = false;
     gameCharacterX = player.getX();
     gameCharacterY = player.getY();
-    enemy->move(gameCharacterX, gameCharacterY,std::move(tiles));//movimento del nemico
+    if(player.getX() > enemy->getX()-30 && player.getX() < enemy->getX()+30 && player.getY() > enemy->getY()-40 && player.getY() < enemy->getY()+40) {
+        player.receiveDamage(5);
+        enemy->move(player.getX(),enemy->getY(),map);
+        if(player.getX() > enemy->getX() )
+            player.move(3, 0, map);
+        if(player.getX() < enemy->getX() )
+            player.move(-3, 0, map);
+    }
+    enemy->move(gameCharacterX, gameCharacterY,map);//movimento del nemico
     enemy->attack(player, enemyHasWeapon);
     enemy->sprite.setPosition(sf::Vector2f(enemy->getX(), enemy->getY()));
 
@@ -154,11 +160,11 @@ void enemyControl(GameCharacter &player,
 //MOVIMENTO E CONTROLLO POSIZIONE DEI PROIETTILI
 void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &enemies, std::vector<Tile *> &tiles) {
     if (bullet->bulletVerse)
-        bullet->move(2);
+        bullet->move(2.3);
     else
-        bullet->move(-2);
+        bullet->move(-2.3);
     bullet->sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
-    if (player.getY() >= bullet->bulletY - 0.5 && player.getY() <= bullet->bulletY + 0.5 &&
+    if (player.getY() >= bullet->bulletY - 3 && player.getY() <= bullet->bulletY + 3 &&
         player.getX() >= bullet->bulletX - 1.9 && player.getX() <= bullet->bulletX + 1.9) {
         player.receiveDamage(bullet->damage);
         bullet->bulletLife=bullet->range;
@@ -184,14 +190,13 @@ void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &e
 
 int main() {
     //SET GAME VALUES
-    int point=0;
-    int spaceshipEnergy = 100, spaceshipHP = 1000;
-    float playerSpeed = 1.1;
+    int spaceshipEnergy = 100, spaceshipHP = 1000000;
+    float playerSpeed = 1.5;
     float playerX = 512, playerY = 384;
-    int basicWeaponPower = 50, basicWeaponCadence = 150, basicWeaponRange = 200;
+    int basicWeaponPower = 50, basicWeaponCadence = 130, basicWeaponRange = 200;
     bool verse = true;
     bool enemyBulletVerse, enemyHasWeapon;
-    int enemyBulletRange = 250, enemyBulletCount = 0, cadenceEnemyBullet = 100;
+    int enemyBulletRange = 250, enemyBulletCount = 0, cadenceEnemyBullet = 80;
     int fireCount = 0;
     int spawnEnemy = 200;
     float maxNumberOfEnemy = 1;
@@ -200,7 +205,6 @@ int main() {
     float enemyDefeated = 0;
     int numberOfCycles = 0;
     int casualNumber;
-
 
     // FIXME carica l'immagine dello sfondo della pagina iniziale
     sf::Texture background;
@@ -220,12 +224,11 @@ int main() {
     gameover.setTexture(gameovert);
     char stato='0';
     //*********************************************************************************************************+
-    std::vector<Tile *> tiles;
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Volcan Battle");
     // define the level with an array of tile indices
     // create the tilemap from the level definition
     TileMap map;
-    if (!map.readMatrix("image/image00.png", "matrice.txt", tiles))
+    if (!map.readMatrix("image/image00.png", "matrice.txt"))
         return -1;
 
     // *********charter1
@@ -300,7 +303,7 @@ int main() {
         if (stato=='2')
             window.draw(gameover);
         if (stato=='1') {
-            if (!map.loadMap(sf::Vector2u(64, 64), 128, 12, tiles))
+            if (!map.loadMap(sf::Vector2u(64, 64), 128, 12))
                 return -1;
             //VISTA MAPPA
             sf::View view0(sf::Vector2f(player.getX(), 384), sf::Vector2f(1024, 764));
@@ -330,22 +333,31 @@ int main() {
 
             GameEvent gameEvent = getEvent(fireCount, player.getWeapon()->getWeaponCadence());
             updateGame(gameEvent, player, factoryB, verse, BulletCommon, BulletBazooka,
-                       bullets, tiles, playerSpeed);//mossa giocatore
+                       bullets,playerSpeed,map);//mossa giocatore
             player.sprite.setPosition(sf::Vector2f(player.getX(), player.getY()));
+            auto it=map.tiles.begin();
+            Tile*  tile;
+            tile=*it;
+            while (player.getX()+20 < tile->xVertexTopSx || (player.getX()+20) > tile->xVertexTopSx + 64 ||
+                   (player.getY()+30) < tile->yVertexTopSx || (player.getY()+30) > tile->yVertexTopSx + 64){
+                tile = *it;
+                it++;
+            }
+            player.receiveDamage(tile->getDamage());
             for (auto enemy:enemies) {
-                enemyControl(player, enemy, enemyHasWeapon, tiles);
+                enemyControl(player, enemy, enemyHasWeapon, map);
                 if (enemyHasWeapon && enemy->cadenceOfBullet >= cadenceEnemyBullet) {
-                    enemyBulletVerse = enemy->getX() < player.getX();
-                    bullets.push_back(
-                            factoryB.createBullet(*enemy, enemy->getEnemyDamage(), enemyBulletVerse,
-                                                  BulletCommon, enemyBulletRange));
-                    enemy->cadenceOfBullet = 0;
+                        enemyBulletVerse = enemy->getX() < player.getX();
+                        bullets.push_back(
+                                factoryB.createBullet(*enemy, enemy->getEnemyDamage(), enemyBulletVerse,
+                                                      BulletCommon, enemyBulletRange));
+                        enemy->cadenceOfBullet = 0;
                 }
                 enemy->cadenceOfBullet++;
             }
             //************** MOVIMENTO PROIETTILI
             for (auto bullet:bullets) {
-                bulletMovement(player, bullet, enemies, tiles);
+                bulletMovement(player, bullet, enemies, map.tiles);
             }
             //**************** CREAZIONE ARMI E POWERUP
             if (enemyDefeated >= 1 + maxNumberOfEnemy) {
@@ -406,7 +418,6 @@ int main() {
                         explosion.setPosition(sf::Vector2f(enemy->getX() - 400, enemy->getY() - 300));
                         enemies.remove(enemy);
                         drawExplosion = true;
-                        point +=100;
                         enemyDefeated++;
                     }
                 }

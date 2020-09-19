@@ -15,7 +15,7 @@ public:
 
     Enemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
 
-    void move(float gamecharacterX, float gamecharacterY,std::vector<Tile *> tiles) override = 0;
+    void move(float gamecharacterX, float gamecharacterY,const TileMap& map) override = 0;
 
     virtual void attack(GameCharacter &player, bool &enemyHasWeapon) = 0;
 

@@ -4,7 +4,7 @@
 #include <utility>
 #include "Tile.h"
 
-Tile::Tile(bool tileCrossable, bool tileDestructible, int damage, std::string tileCode, float xTopSx, float yTopSx)
+Tile::Tile( bool tileCrossable, bool tileDestructible, int damage, std::string tileCode, float xTopSx, float yTopSx)
         : crossable(tileCrossable), destructible(tileDestructible), damageIfHit(damage), code(std::move(tileCode)),
           xVertexTopSx(xTopSx), yVertexTopSx(yTopSx) {}
 

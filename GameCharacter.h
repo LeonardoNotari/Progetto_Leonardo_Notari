@@ -26,7 +26,7 @@ public:
 
     float getXMin() const;
 
-    void move(float x, float y,std::vector<Tile *> tiles) override;
+    void move(float x, float y,const TileMap& map) override;
 
     void setEnergy(int incremento);
 
