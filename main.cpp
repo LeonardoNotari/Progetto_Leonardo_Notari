@@ -61,23 +61,27 @@ float generateCasualNumber() {
 
 void updateGame(const GameEvent &gameEvent, GameCharacter &player, BulletFactory factory,
                 bool &verse,const sf::Texture &bulletTexture, const sf::Texture &bulletTexture1,
-                std::list<bullet *> &bullets, float playerSpeed,const TileMap& map) {
+                std::list<bullet *> &bullets, float playerSpeed,const TileMap& map, std::string& lastMove) {
     switch (gameEvent) {
         case GameEvent::up: {
+            lastMove="up";
             player.move(0, -playerSpeed,map);
             break;
         }
         case GameEvent::left: {
             verse = false;
+            lastMove="left";
             player.move(-playerSpeed, 0,map);
             break;
         }
         case GameEvent::down: {
+            lastMove="down";
             player.move(0, playerSpeed,map);
             break;
         }
         case GameEvent::right: {
             verse = true;
+            lastMove="right";
             player.move(playerSpeed, 0,map);
             break;
         }
@@ -96,12 +100,20 @@ void updateGame(const GameEvent &gameEvent, GameCharacter &player, BulletFactory
             break;
         }
         case GameEvent::noop: {
+            if(lastMove=="up")
+                player.move(0, -0.3,map);
+            if(lastMove=="left")
+                player.move(-0.6, 0,map);
+            if(lastMove=="down")
+                player.move(0, 0.3,map);
+            if(lastMove=="right")
+                player.move(0.6, 0,map);
             break;
         }
     }
 }
 
-void itemControl(PowerUp &item, GameCharacter &player) {//controllo powerup
+void powerUpControl(PowerUp &item, GameCharacter &player) {//controllo powerup
     if (player.getX() < item.getX() + 30 && player.getX() > item.getX() - 30 && player.getY() < item.getY() + 30 &&
         player.getY() > item.getY() - 30) {
         if (item.getType() == PowerUpType::Life)
@@ -143,7 +155,7 @@ void enemyControl(GameCharacter &player,
     gameCharacterX = player.getX();
     gameCharacterY = player.getY();
     if(player.getX() > enemy->getX()-30 && player.getX() < enemy->getX()+30 && player.getY() > enemy->getY()-40 && player.getY() < enemy->getY()+40) {
-        player.receiveDamage(5);
+        player.receiveDamage(10);
         enemy->move(player.getX(),enemy->getY(),map);
         if(player.getX() > enemy->getX() )
             player.move(3, 0, map);
@@ -190,7 +202,7 @@ void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &e
 
 int main() {
     //SET GAME VALUES
-    int spaceshipEnergy = 100, spaceshipHP = 1000000;
+    int spaceshipEnergy = 100, spaceshipHP = 1000;
     float playerSpeed = 1.5;
     float playerX = 512, playerY = 384;
     int basicWeaponPower = 50, basicWeaponCadence = 130, basicWeaponRange = 200;
@@ -202,11 +214,10 @@ int main() {
     float maxNumberOfEnemy = 1;
     bool drawExplosion = false;
     int lifeOfExplosion = 0;
-    float enemyDefeated = 0;
     int numberOfCycles = 0;
     int casualNumber;
-
-    // FIXME carica l'immagine dello sfondo della pagina iniziale
+    std::string lastMove;
+    // carica l'immagine dello sfondo della pagina iniziale
     sf::Texture background;
     if (!background.loadFromFile("image/page1.png"))
     {
@@ -257,7 +268,7 @@ int main() {
     lifeTexture.loadFromFile("image/life1.png");
     sf::Texture energyTexture;
     energyTexture.loadFromFile("image/statuetta.png");
-    std::list<PowerUp *> items;
+    std::list<PowerUp *> powerUps;
 
     sf::Texture explosionTexture;
     explosionTexture.loadFromFile("image/explosion.png");
@@ -333,7 +344,7 @@ int main() {
 
             GameEvent gameEvent = getEvent(fireCount, player.getWeapon()->getWeaponCadence());
             updateGame(gameEvent, player, factoryB, verse, BulletCommon, BulletBazooka,
-                       bullets,playerSpeed,map);//mossa giocatore
+                       bullets,playerSpeed,map,lastMove);//mossa giocatore
             player.sprite.setPosition(sf::Vector2f(player.getX(), player.getY()));
             auto it=map.tiles.begin();
             Tile*  tile;
@@ -360,7 +371,7 @@ int main() {
                 bulletMovement(player, bullet, enemies, map.tiles);
             }
             //**************** CREAZIONE ARMI E POWERUP
-            if (enemyDefeated >= 1 + maxNumberOfEnemy) {
+            if (player.getEnemyDefeated()-maxNumberOfEnemy >= 1 + maxNumberOfEnemy) {
                 casualNumber = static_cast<int>(generateCasualNumber());
                 if (casualNumber % 5 == 0)
                     weapons.push_back(
@@ -378,24 +389,29 @@ int main() {
                                                   laserGunTexture, static_cast<int>(generateCasualNumber()) %
                                                                    static_cast<int>(maxNumberOfEnemy) + 1));
                 if (casualNumber % 5 == 3)
-                    items.push_back(createPowerUp(PowerUpType::Life, lifeTexture));
+                    powerUps.push_back(createPowerUp(PowerUpType::Life, lifeTexture));
                 if (casualNumber % 5 == 4)
-                    items.push_back(createPowerUp(PowerUpType::Energy, energyTexture));
-                enemyDefeated = 0;
+                    powerUps.push_back(createPowerUp(PowerUpType::Energy, energyTexture));
+                //PROVA OBSERVE FIXME
+                if(casualNumber%5==4 || casualNumber%5==3)
+                    player.subscribe(*powerUps.end());
+                else
+                    player.subscribe(*weapons.end());
                 maxNumberOfEnemy++;
             }
             //************CONTROLLO E ELIMINAZIONE POWERUP
-            for (auto item:items) {
-                itemControl(*item, player);
+            for (auto powerUp:powerUps) {
+                powerUpControl(*powerUp, player);
             }
-            if (!items.empty()) {
+            if (!powerUps.empty()) {
                 PowerUp *powerUp;
-                auto it = items.begin();
-                while (it != items.end()) {
-                    powerUp = *it;
-                    it++;
+                auto itPU = powerUps.begin();
+                while (itPU != powerUps.end() ) {
+                    powerUp = *itPU;
+                    itPU++;
                     if (powerUp->used) {
-                        items.remove(powerUp);
+                        player.unsubscribe(powerUp);
+                        powerUps.remove(powerUp);
                     }
                 }
             }
@@ -404,31 +420,32 @@ int main() {
                 weaponControl(*weapon, player);
             }
             if (player.getWeapon()->getWeaponBullet() == 0) {
+                player.unsubscribe(player.getWeapon());
                 weapons.remove(player.getWeapon());
                 player.equipWeapon(&baseGun);
             }
             //**************  CANCELLA NEMICI
             if (!enemies.empty()) {
                 Enemy *enemy;
-                auto it = enemies.begin();
-                while (it != enemies.end()) {
-                    enemy = *it;
-                    it++;
+                auto itEnemy = enemies.begin();
+                while (itEnemy != enemies.end()) {
+                    enemy = *itEnemy;
+                    itEnemy++;
                     if (enemy->getHP() <= 0) {
                         explosion.setPosition(sf::Vector2f(enemy->getX() - 400, enemy->getY() - 300));
                         enemies.remove(enemy);
                         drawExplosion = true;
-                        enemyDefeated++;
+                        player.setEnemyDefeated();
                     }
                 }
             }
             //************* ELIMINAZIONE PROIETTILI
             if (!bullets.empty()) {
                 bullet * bullet;
-                auto it = bullets.begin();
-                while (it != bullets.end()) {
-                    bullet = *it;
-                    it++;
+                auto itBullet = bullets.begin();
+                while (itBullet != bullets.end()) {
+                    bullet = *itBullet;
+                    itBullet++;
                     if (bullet->bulletLife == bullet->range) {
                         bullets.remove(bullet);
                     }
@@ -460,8 +477,8 @@ int main() {
                 if (!weapon->equip)
                     window.draw(weapon->sprite);
             }
-            for (auto item:items)
-                window.draw(item->sprite);
+            for (auto powerUp:powerUps)
+                window.draw(powerUp->sprite);
             if (drawExplosion) {
                 lifeOfExplosion++;
                 window.draw(explosion);
@@ -488,7 +505,6 @@ int main() {
             if (player.getHP()<=0) {
                 player.reset(spaceshipEnergy,spaceshipHP,playerX,playerY);
                 player.equipWeapon(&baseGun);
-                enemyDefeated=0;
                 maxNumberOfEnemy=1;
                 weapons.clear();
                 enemies.clear();

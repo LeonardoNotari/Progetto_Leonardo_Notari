@@ -61,5 +61,28 @@ void GameCharacter::reset(int playerEnergy,int hp,float x,float y){
     this->HP=1000;
     this->posX=x;
     this->posY=y;
+    this->enemyDefeated=0;
     this->weapon= nullptr;
+}
+
+void GameCharacter::subscribe(Observer* o) {
+    observers.push_back(o);
+}
+
+void GameCharacter::unsubscribe(Observer* o) {
+    observers.remove(o);
+}
+
+void GameCharacter::notify() {
+    for(auto & observer : this->observers){
+        observer->update();
+    }
+}
+
+void GameCharacter::setEnemyDefeated() {
+    this->enemyDefeated++;
+}
+
+float GameCharacter::getEnemyDefeated() const {
+    return this->enemyDefeated;
 }

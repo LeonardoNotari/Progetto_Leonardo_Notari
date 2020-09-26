@@ -52,3 +52,7 @@ int Weapon::getWeaponCadence() const {
 int Weapon::getWeaponRange() const {
     return this->range;
 }
+
+void Weapon::update() {
+
+}

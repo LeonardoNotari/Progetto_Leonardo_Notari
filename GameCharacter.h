@@ -6,11 +6,14 @@
 #define PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H
 
 #include <iostream>
+#include <list>
 #include "Weapon.h"
 #include "Tile.h"
+#include "Subject.h"
+#include "Observer.h"
 #include "Character.h"
 
-class GameCharacter : public Character {
+class GameCharacter : public Character, public Subject {
 public:
 
     GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
@@ -30,18 +33,28 @@ public:
 
     void setEnergy(int incremento);
 
+    void setEnemyDefeated();
+
+    float getEnemyDefeated() const;
+
     void reset(int playerEnergy,int hp,float x,float y);
+
+    void subscribe(Observer* o) override;
+
+    void unsubscribe(Observer* o) override;
+
+    void notify() override;
 
 protected:
     bool isPossibleEquipWeapon(int cost) const;
-
+    std::list<Observer*> observers;
     Weapon *weapon{nullptr};
     int energy;
-    //int freeEnergy {energy}; FIXME se si vuole poter equipaggiare piu armi
     std::string name;
     float xMax{8192};
     float xMin{20};
     float yMax{768};
+    float enemyDefeated{0};
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

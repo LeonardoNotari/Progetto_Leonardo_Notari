@@ -29,3 +29,8 @@ float PowerUp::getY() const {
 PowerUpType PowerUp::getType() const {
     return this->type;
 }
+
+//FIXME PROVA OBSERVER
+void PowerUp::update() {
+    this->effect=this->effect * 2;
+}

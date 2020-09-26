@@ -11,6 +11,11 @@ Tile *TileFactory::createTile(TileType type, std::string tileCode, float xTopSx,
     Tile *tile;
     bool crossable, destructible;
     int damage;
+    if (type == TileType::columnRockTile) {
+        destructible = false;
+        crossable = false;
+        damage = 2;
+    }
     if (type == TileType::topRockTile) {
         destructible = false;
         crossable = false;
@@ -19,7 +24,7 @@ Tile *TileFactory::createTile(TileType type, std::string tileCode, float xTopSx,
     if (type == TileType::tipsRockTile) {
         destructible = true;
         crossable = false;
-        damage = 1;
+        damage = 3;
     }
     if (type == TileType::lavaTile) {
         destructible = false;

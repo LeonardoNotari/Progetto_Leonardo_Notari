@@ -4,14 +4,15 @@
 
 #ifndef PROGETTO_LEONARDO_NOTARI__POWERUP_H
 #define PROGETTO_LEONARDO_NOTARI__POWERUP_H
+#include <SFML/Graphics.hpp>
+#include "Observer.h"
 
 enum class PowerUpType {
-    Power, Energy, Life
+    Energy, Life
 };
 
-#include <SFML/Graphics.hpp>
 
-class PowerUp {
+class PowerUp: public Observer{
 public:
     PowerUp(float x, float y, int increment, sf::Sprite itemSprite, PowerUpType itemType);
 
@@ -20,6 +21,8 @@ public:
     float getX() const;
 
     float getY() const;
+
+    void update() override;
 
     PowerUpType getType() const;
 

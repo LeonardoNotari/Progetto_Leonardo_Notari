@@ -27,7 +27,7 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
         std::stringstream stream(auxString);
         while (std::getline(stream, auxString, ';')) {
             //FIXME PROVA NUOVO VETTORE DI TILES
-            if (auxString == " 2" || auxString == " 0" || auxString == " 1" || auxString == " 8" || auxString == " 9")
+            if (auxString == " 0" || auxString == " 1" || auxString == " 8" || auxString == " 9")
                 this->tiles.push_back(factoryT.createTile(TileType::topRockTile, auxString, x, y));
             if (auxString == " 4" || auxString == " 5" || auxString == " 6")
                 this->tiles.push_back(factoryT.createTile(TileType::lavaTile, auxString, x, y));
@@ -35,7 +35,8 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
                 this->tiles.push_back(factoryT.createTile(TileType::backgroundTile, auxString, x, y));
             if (auxString == " 3" || auxString == " 7" || auxString == "10")
                 this->tiles.push_back(factoryT.createTile(TileType::tipsRockTile, auxString, x, y));
-
+            if (auxString == " 2" )
+                this->tiles.push_back(factoryT.createTile(TileType::columnRockTile, auxString, x, y));
             x += 64;
             if (x == 8192) {
                 y += 64;

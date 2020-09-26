@@ -6,12 +6,13 @@
 #define PROGETTO_LEONARDO_NOTARI_WEAPON_H
 
 #include <SFML/Graphics.hpp>
+#include "Observer.h"
 
 enum class WeaponType {
     MachineGun, LaserGun, Bazooka, Common
 };
 
-class Weapon {
+class Weapon: public Observer {
 public:
 
     explicit Weapon(int basicWeaponPower, int weaponCadence, int weaponRange);
@@ -34,6 +35,8 @@ public:
     void setWeaponBullet();
 
     int getWeaponRange() const;
+
+    void update() override;
 
     bool equip{false};
 
