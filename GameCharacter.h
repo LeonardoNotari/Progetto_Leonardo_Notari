@@ -43,7 +43,13 @@ public:
 
     void unsubscribe(Observer* o) override;
 
-    void notify() override;
+    void notify(const std::string& goalReach) override;
+
+    std::string getGoal();
+
+    void setGoal();
+
+    void setScore(int increment);
 
 protected:
     bool isPossibleEquipWeapon(int cost) const;
@@ -51,10 +57,14 @@ protected:
     Weapon *weapon{nullptr};
     int energy;
     std::string name;
+    std::string goal{" "};
     float xMax{8192};
     float xMin{20};
     float yMax{768};
     float enemyDefeated{0};
+    int score{0};
+    int travel{0};
+    int weaponEquipped{0};
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

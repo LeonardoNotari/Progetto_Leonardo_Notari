@@ -10,7 +10,7 @@
 #include "Character.h"
 
 
-class Enemy : public Character {
+class Enemy : public Character , public Observer {
 public:
 
     Enemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed, sf::Sprite enemySprite);
@@ -22,6 +22,8 @@ public:
     int getEnemyDamage() const;
 
     int cadenceOfBullet{0};
+
+    void update(const std::string& goalReach) override;
 
 protected:
     int damage;

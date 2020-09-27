@@ -6,12 +6,16 @@
 #define PROGETTO_LEONARDO_NOTARI__RESOURCE_H
 
 #include <SFML/Graphics.hpp>
+#include <list>
 
 class Resource {
 public:
-    sf::Texture texture;
-    void setTexture();
-
+    static Resource * getInstance();
+    ~Resource()=default;
+private:
+    static Resource* instance;
+    std::list<std::string> textures;
+    Resource();
 };
 
 

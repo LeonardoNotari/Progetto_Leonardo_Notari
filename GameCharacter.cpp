@@ -20,8 +20,18 @@ bool GameCharacter::isPossibleEquipWeapon(int cost) const {
 
 void GameCharacter::equipWeapon(Weapon *gun) {
     if (this->isPossibleEquipWeapon(gun->getWeaponCost())) {
+        this->weaponEquipped+=1;
         this->weapon = gun;
         gun->equip = true;
+    }
+    if(weaponEquipped==5){
+        this->notify("EquipGoal1");
+    }
+    if(weaponEquipped==15){
+        this->notify("EquipGoal2");
+    }
+    if(weaponEquipped==50){
+        this->notify("EquipGoal1");
     }
 }
 
@@ -48,7 +58,14 @@ void GameCharacter::move(float x, float y,const TileMap& map) {
             posX += x;
         if (this->posY + y > xMin - 15 && this->posY + y < yMax - 45)
             posY += y;
+        this->travel+=1;
     }
+    if(travel==10000)
+        this->notify("TravelGoal1");
+    if(travel==100000)
+        this->notify("TravelGoal2");
+    if(travel==1000000)
+        this->notify("TravelGoal3");
     this->receiveDamage(damage);
 }
 
@@ -56,12 +73,28 @@ void GameCharacter::setEnergy(int increment) {
     this->energy += increment;
 }
 
+void GameCharacter::setGoal() {
+    this->goal=" ";
+}
+
+void GameCharacter::setScore(int increment) {
+    this->score+=increment;
+}
+
+std::string GameCharacter::getGoal() {
+    return this->goal;
+}
+
 void GameCharacter::reset(int playerEnergy,int hp,float x,float y){
     this->energy=playerEnergy;
+    this->observers.clear();
     this->HP=1000;
     this->posX=x;
     this->posY=y;
     this->enemyDefeated=0;
+    this->score=0;
+    this->travel=0;
+    this->weaponEquipped=0;
     this->weapon= nullptr;
 }
 
@@ -73,14 +106,24 @@ void GameCharacter::unsubscribe(Observer* o) {
     observers.remove(o);
 }
 
-void GameCharacter::notify() {
+void GameCharacter::notify(const std::string& goalReach) {
+    this->goal=goalReach;
+    if(goalReach=="EnemyGoal1" || goalReach=="TravelGoal1" || goalReach=="EquipGoal1"){
+        score+=500;
+    }
+    if(goalReach=="EnemyGoal2" || goalReach=="TravelGoal2" || goalReach=="EquipGoal2"){
+        score+=1500;
+    }
+    if(goalReach=="EnemyGoal3" || goalReach=="TravelGoal3" || goalReach=="EquipGoal3"){
+        score+=5000;
+    }
     for(auto & observer : this->observers){
-        observer->update();
+        observer->update(goalReach);
     }
 }
 
 void GameCharacter::setEnemyDefeated() {
-    this->enemyDefeated++;
+    this->enemyDefeated+=1;
 }
 
 float GameCharacter::getEnemyDefeated() const {

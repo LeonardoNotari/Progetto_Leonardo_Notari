@@ -36,7 +36,7 @@ public:
 
     int getWeaponRange() const;
 
-    void update() override;
+    void update(const std::string& goalReach) override;
 
     bool equip{false};
 

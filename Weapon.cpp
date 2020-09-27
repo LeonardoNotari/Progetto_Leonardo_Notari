@@ -53,6 +53,11 @@ int Weapon::getWeaponRange() const {
     return this->range;
 }
 
-void Weapon::update() {
-
+void Weapon::update(const std::string& goalReach) {
+    if(goalReach=="EquipGoal1")
+        this->power = this->power * 2;
+    if(goalReach=="EquipGoal2")
+        this->power = this->power * 5;
+    if(goalReach=="EquipGoal1")
+        this->power = this->power * 10;
 }

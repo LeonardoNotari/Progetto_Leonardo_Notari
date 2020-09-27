@@ -9,7 +9,7 @@
 #include "GameCharacter.h"
 
 
-class KamikazeEnemy : virtual public Enemy {
+class KamikazeEnemy : virtual public Enemy{
 public:
     KamikazeEnemy(int enemyHP, float enemyX, float enemyY, int enemyPower, float enemySpeed,
                   const sf::Sprite &enemySprite);

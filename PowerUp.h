@@ -22,7 +22,7 @@ public:
 
     float getY() const;
 
-    void update() override;
+    void update(const std::string& goalReach) override;
 
     PowerUpType getType() const;
 

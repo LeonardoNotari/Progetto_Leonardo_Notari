@@ -202,7 +202,7 @@ void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &e
 
 int main() {
     //SET GAME VALUES
-    int spaceshipEnergy = 100, spaceshipHP = 1000;
+    int spaceshipEnergy = 1000, spaceshipHP = 10000;
     float playerSpeed = 1.5;
     float playerX = 512, playerY = 384;
     int basicWeaponPower = 50, basicWeaponCadence = 130, basicWeaponRange = 200;
@@ -210,13 +210,15 @@ int main() {
     bool enemyBulletVerse, enemyHasWeapon;
     int enemyBulletRange = 250, enemyBulletCount = 0, cadenceEnemyBullet = 80;
     int fireCount = 0;
+    float countWeaponPowerUp=0;
     int spawnEnemy = 200;
-    float maxNumberOfEnemy = 1;
+    float maxNumberOfEnemy = 2;
     bool drawExplosion = false;
     int lifeOfExplosion = 0;
     int numberOfCycles = 0;
-    int casualNumber;
+    int casualNumber,durateGoal=0;
     std::string lastMove;
+    std::string goalReach;
     // carica l'immagine dello sfondo della pagina iniziale
     sf::Texture background;
     if (!background.loadFromFile("image/page1.png"))
@@ -292,20 +294,20 @@ int main() {
     EnemyFactory factoryE;
     BulletFactory factoryB;
     WeaponFactory factoryW;
-
-
-
     //FIXME PROVA SCRITTE
     std::string hpPlayer;
     std::string EPlayer;
     std::string PPlayer;
     std::string BPlayer;
     sf::Text Hp;
+    sf::Text Goal;
     sf::Font font;
     if(!font.loadFromFile("image/Roboto-Black.ttf"))
         return -1;
     Hp.setFont(font);
     Hp.setCharacterSize(16);
+    Goal.setFont(font);
+    Goal.setCharacterSize(50);
     //************* GAMELOOP
     while (window.isOpen())
     {
@@ -336,6 +338,7 @@ int main() {
                                                                static_cast<int>(generateCasualNumber()) %
                                                                static_cast<int>(maxNumberOfEnemy) + 1));
                     numberOfCycles = 0;
+                    player.subscribe(enemies.back());
                 }
             }
             numberOfCycles++;
@@ -371,7 +374,7 @@ int main() {
                 bulletMovement(player, bullet, enemies, map.tiles);
             }
             //**************** CREAZIONE ARMI E POWERUP
-            if (player.getEnemyDefeated()-maxNumberOfEnemy >= 1 + maxNumberOfEnemy) {
+            if (countWeaponPowerUp>=maxNumberOfEnemy) {
                 casualNumber = static_cast<int>(generateCasualNumber());
                 if (casualNumber % 5 == 0)
                     weapons.push_back(
@@ -392,11 +395,11 @@ int main() {
                     powerUps.push_back(createPowerUp(PowerUpType::Life, lifeTexture));
                 if (casualNumber % 5 == 4)
                     powerUps.push_back(createPowerUp(PowerUpType::Energy, energyTexture));
-                //PROVA OBSERVE FIXME
                 if(casualNumber%5==4 || casualNumber%5==3)
-                    player.subscribe(*powerUps.end());
+                    player.subscribe(powerUps.back());
                 else
-                    player.subscribe(*weapons.end());
+                    player.subscribe(weapons.back());
+                countWeaponPowerUp=0;
                 maxNumberOfEnemy++;
             }
             //************CONTROLLO E ELIMINAZIONE POWERUP
@@ -433,9 +436,21 @@ int main() {
                     itEnemy++;
                     if (enemy->getHP() <= 0) {
                         explosion.setPosition(sf::Vector2f(enemy->getX() - 400, enemy->getY() - 300));
+                        player.setScore(50*enemy->getHP()%100);
+                        player.unsubscribe(enemy);
                         enemies.remove(enemy);
                         drawExplosion = true;
+                        countWeaponPowerUp++;
                         player.setEnemyDefeated();
+                        if(player.getEnemyDefeated()==10) {
+                            player.notify("EnemyGoal1");
+                        }
+                        if(player.getEnemyDefeated()==25) {
+                            player.notify("EnemyGoal2");
+                        }
+                        if(player.getEnemyDefeated()==50) {
+                            player.notify("EnemyGoal3");
+                        }
                     }
                 }
             }
@@ -451,13 +466,15 @@ int main() {
                     }
                 }
             }
-            //**************POSIZIONE SCRITTE
+            //**************FIXME POSIZIONE SCRITTE
             hpPlayer = std::to_string(player.getHP());
             EPlayer = std::to_string(player.getEnergy());
             PPlayer = std::to_string(player.getWeapon()->getWeaponPower());
             BPlayer = std::to_string(player.getWeapon()->getWeaponBullet());
+            Goal.setString(player.getGoal());
             Hp.setString("HP:" + hpPlayer + "  Energy:" + EPlayer + "  Power:" + PPlayer + "  Bullet:" + BPlayer);
             Hp.setPosition(player.getX() + 180, 50);
+            Goal.setPosition(player.getX() -100 , 200);
             //************* DISEGNA SPRITE E MAPPA
             window.clear();
             if (player.getX() >= player.getXMin() + 512 || player.getX() <= player.getXMax() - 512)
@@ -469,6 +486,14 @@ int main() {
             window.draw(map);
             window.draw(player.sprite);
             window.draw(Hp);
+            if(Goal.getString()!=" ") {
+                if(durateGoal>700) {
+                    durateGoal = 0;
+                    player.setGoal();
+                }
+                window.draw(Goal);
+                durateGoal++;
+            }
             for (auto enemy:enemies)
                 window.draw(enemy->sprite);
             for (auto bullet:bullets)

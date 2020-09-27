@@ -10,7 +10,7 @@ public:
     virtual ~Subject();
     virtual void subscribe(Observer* o)=0;
     virtual void unsubscribe(Observer* o)=0;
-    virtual void notify()=0;
+    virtual void notify(const std::string& goalReach)=0;
 
 };
 
