@@ -21,15 +21,41 @@ TEST(GameCharacter, EquipWeapon) {
 
 TEST(GameCharacter, Move) {
     TileMap map;
+    Tile *tile;
+    int i = 0, j = 0;
     sf::Sprite spriteTest;
-    GameCharacter player(8, 0, 0, 0, spriteTest);
+    int a;
+    int matrix[6][8] = {
+            1, 0, 0, 1, 0, 0, 0, 1,
+            2, 12, 12, 3, 12, 12, 12, 2,
+            2, 12, 12, 12, 12, 12, 12, 2,
+            2, 12, 12, 12, 12, 10, 12, 2,
+            2, 12, 12, 12, 12, 2, 12, 2,
+            8, 9, 9, 9, 9, 8, 9, 8
+    };
+    while (j < 6) {
+        a = matrix[j][i];
+        if (a == 12)
+            tile = new Tile(true, false, 0, std::move(std::to_string(a)), i * 64, j * 64);
+        if (a == 1 || a == 2 || a == 8 || a == 9)
+            tile = new Tile(false, false, 0, std::move(std::to_string(a)), i * 64, j * 64);
+        if (a == 3 || a == 10)
+            tile = new Tile(false, true, 10, std::move(std::to_string(a)), i * 64, j * 64);
+        map.tiles.push_back(tile);
+        i++;
+        if (i == 8) {
+            i = 0;
+            j++;
+        }
+    }
+    GameCharacter player(8, 200, 200, 0, spriteTest);
     player.move(0, 1, map);
     player.move(1, 0, map);
     player.move(1, 0, map);
     player.move(1, 0, map);
     player.move(1, 0, map);
-    ASSERT_EQ(4, player.getX());
-    ASSERT_EQ(1, player.getY());
+    ASSERT_EQ(204, player.getX());
+    ASSERT_EQ(201, player.getY());
 }
 
 TEST(GameCharacter, ReceivedDamage) {
@@ -130,7 +156,7 @@ TEST(GameCharacter, TileCollision) {
     player.move(7, 0, map);
     player.move(7, 0, map);
     player.move(7, 0, map);
-    ASSERT_EQ(player.getX(), 442);
+    ASSERT_EQ(player.getX(), 428);
     auto it = map.tiles.begin();
     tile = *it;
     while (player.getX() + 10 < tile->xVertexTopSx || player.getX() + 10 > tile->xVertexTopSx + 64 ||
@@ -138,8 +164,8 @@ TEST(GameCharacter, TileCollision) {
         tile = *it;
         it++;
     }
-    ASSERT_EQ(tile->getIsCrossable(), false);
-    ASSERT_EQ(tile->code, "2");
+    ASSERT_EQ(tile->getIsCrossable(), true);
+    ASSERT_EQ(tile->code, "12");
     player.move(0, 15, map);
     player.move(0, 15, map);
     player.move(0, 15, map);
@@ -152,7 +178,7 @@ TEST(GameCharacter, TileCollision) {
     player.move(0, 15, map);
     player.move(0, 15, map);
     player.move(0, 15, map);
-    ASSERT_EQ(player.getY(), 315);
+    ASSERT_EQ(player.getY(), 285);
     it = map.tiles.begin();
     tile = *it;
     while (player.getX() < tile->xVertexTopSx || player.getX() > tile->xVertexTopSx + 64 ||
@@ -160,8 +186,8 @@ TEST(GameCharacter, TileCollision) {
         tile = *it;
         it++;
     }
-    ASSERT_EQ(tile->getIsCrossable(), false);
-    ASSERT_EQ(tile->code, "9");
+    ASSERT_EQ(tile->getIsCrossable(), true);
+    ASSERT_EQ(tile->code, "12");
     player.move(0, -15, map);
     player.move(0, -15, map);
     player.move(0, -15, map);
@@ -176,9 +202,9 @@ TEST(GameCharacter, TileCollision) {
     player.move(-10, 0, map);
     player.move(-10, 0, map);
     player.move(-10, 0, map);
-    ASSERT_EQ(player.getY(), 240);
-    ASSERT_EQ(player.getX(), 392);
-    ASSERT_EQ(player.getHP(), 160);
+    ASSERT_EQ(player.getY(), 210);
+    ASSERT_EQ(player.getX(), 368);
+    ASSERT_EQ(player.getHP(), 170);
     it = map.tiles.begin();
     tile = *it;
     while (player.getX() - 10 < tile->xVertexTopSx || player.getX() - 10 > tile->xVertexTopSx + 64 ||

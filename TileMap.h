@@ -22,7 +22,6 @@ public:
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 };

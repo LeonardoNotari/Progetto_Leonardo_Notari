@@ -84,9 +84,8 @@ bool TileMap::loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int he
 }
 
 bool TileMap::isLegalMove(float characterX, float characterY, float x, float y, int &damage) const {
-    auto it = this->tiles.begin();
-    Tile *tile;
-    tile = *it;
+    auto it = tiles.begin();
+    Tile *tile = *tiles.begin();
     while (characterX + 20 + x < tile->xVertexTopSx || (characterX + 20) + x > tile->xVertexTopSx + 64 ||
            (characterY + 30) + y < tile->yVertexTopSx || (characterY + 30) + y > tile->yVertexTopSx + 64) {
         tile = *it;

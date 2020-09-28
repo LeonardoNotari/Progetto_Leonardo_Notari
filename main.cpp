@@ -21,6 +21,8 @@ enum class GameEvent {
     left, up, down, right, fire, noop
 };
 
+const int tileSize = 64;
+const int contactDistance = 30;
 
 GameEvent getEvent(int &cycles, int cadence) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -48,13 +50,15 @@ GameEvent getEvent(int &cycles, int cadence) {
 }
 
 float generateCasualX() {
+    int width = 8000;
     srand(time(nullptr));
-    return rand() % 8000 + 64;
+    return rand() % width + tileSize;
 }
 
 float generateCasualY() {
+    int height = 640;
     srand(time(nullptr));
-    return rand() % 640 + 64;
+    return rand() % height + tileSize;
 }
 
 float generateCasualNumber() {
@@ -78,6 +82,7 @@ bullet *generateBullet(const Character &character,WeaponType type, int power, bo
 
 void updateGame(const GameEvent &gameEvent, GameCharacter &player,
                 bool &verse,std::list<bullet *> &bullets, float playerSpeed, const TileMap &map, std::string &lastMove) {
+    const float xStdSpeed = 0.6, yStdSpeed = 0.3;
     switch (gameEvent) {
         case GameEvent::up: {
             lastMove = "up";
@@ -112,21 +117,22 @@ void updateGame(const GameEvent &gameEvent, GameCharacter &player,
         }
         case GameEvent::noop: {
             if (lastMove == "up")
-                player.move(0, -0.3, map);
+                player.move(0, -yStdSpeed, map);
             if (lastMove == "left")
-                player.move(-0.6, 0, map);
+                player.move(-xStdSpeed, 0, map);
             if (lastMove == "down")
-                player.move(0, 0.3, map);
+                player.move(0, yStdSpeed, map);
             if (lastMove == "right")
-                player.move(0.6, 0, map);
+                player.move(xStdSpeed, 0, map);
             break;
         }
     }
 }
 
 void powerUpControl(PowerUp &item, GameCharacter &player) {//controllo powerup
-    if (player.getX() < item.getX() + 30 && player.getX() > item.getX() - 30 && player.getY() < item.getY() + 30 &&
-        player.getY() > item.getY() - 30) {
+    if (player.getX() < item.getX() + contactDistance && player.getX() > item.getX() - contactDistance &&
+        player.getY() < item.getY() + contactDistance &&
+        player.getY() > item.getY() - contactDistance) {
         if (item.getType() == PowerUpType::Life)
             player.receiveDamage(-(item.getEffect()));
         if (item.getType() == PowerUpType::Energy)
@@ -136,8 +142,10 @@ void powerUpControl(PowerUp &item, GameCharacter &player) {//controllo powerup
 }
 
 bool weaponControl(Weapon &weapon, GameCharacter &player) {
-    if (weapon.getWeaponX() - 30 < player.getX() && weapon.getWeaponX() + 30 > player.getX() &&
-        weapon.getWeaponY() - 30 < player.getY() && weapon.getWeaponY() + 30 > player.getY()) {
+    if (weapon.getWeaponX() - contactDistance < player.getX() &&
+        weapon.getWeaponX() + contactDistance > player.getX() &&
+        weapon.getWeaponY() - contactDistance < player.getY() &&
+        weapon.getWeaponY() + contactDistance > player.getY()) {
         return player.equipWeapon(&weapon);
     }
     return false;
@@ -147,17 +155,19 @@ bool weaponControl(Weapon &weapon, GameCharacter &player) {
 void enemyControl(GameCharacter &player,
                   Enemy *enemy, bool &enemyHasWeapon, const TileMap &map) {//controllo delle posizioni
     float gameCharacterX, gameCharacterY;
+    const int collisionDamage = 10;
+    const float collisionMove = 3;
     enemyHasWeapon = false;
     gameCharacterX = player.getX();
     gameCharacterY = player.getY();
-    if (player.getX() > enemy->getX() - 30 && player.getX() < enemy->getX() + 30 &&
-        player.getY() > enemy->getY() - 40 && player.getY() < enemy->getY() + 40) {
-        player.receiveDamage(10);
+    if (player.getX() > enemy->getX() - contactDistance && player.getX() < enemy->getX() + contactDistance &&
+        player.getY() > enemy->getY() - contactDistance && player.getY() < enemy->getY() + contactDistance) {
+        player.receiveDamage(collisionDamage);
         enemy->move(player.getX(), enemy->getY(), map);
         if (player.getX() > enemy->getX())
-            player.move(3, 0, map);
+            player.move(collisionMove, 0, map);
         if (player.getX() < enemy->getX())
-            player.move(-3, 0, map);
+            player.move(-collisionMove, 0, map);
     }
     enemy->move(gameCharacterX, gameCharacterY, map);//movimento del nemico
     enemy->attack(player, enemyHasWeapon);
@@ -167,10 +177,11 @@ void enemyControl(GameCharacter &player,
 
 //MOVIMENTO E CONTROLLO POSIZIONE DEI PROIETTILI
 void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &enemies, std::vector<Tile *> &tiles) {
+    const float bulletSpeed = 2.5;
     if (bullet->bulletVerse)
-        bullet->move(2.3);
+        bullet->move(bulletSpeed);
     else
-        bullet->move(-2.3);
+        bullet->move(-bulletSpeed);
     bullet->sprite.setPosition(sf::Vector2f(bullet->bulletX, bullet->bulletY));
     if (player.getY() >= bullet->bulletY - 3 && player.getY() <= bullet->bulletY + 3 &&
         player.getX() >= bullet->bulletX - 1.9 && player.getX() <= bullet->bulletX + 1.9) {
@@ -185,8 +196,8 @@ void bulletMovement(GameCharacter &player, bullet *bullet, std::list<Enemy *> &e
         }
     }
     for (auto tile:tiles) {
-        if (tile->yVertexTopSx < bullet->bulletY && tile->yVertexTopSx + 64 > bullet->bulletY &&
-            tile->xVertexTopSx < bullet->bulletX && tile->xVertexTopSx + 64 > bullet->bulletX) {
+        if (tile->yVertexTopSx < bullet->bulletY && tile->yVertexTopSx + tileSize > bullet->bulletY &&
+            tile->xVertexTopSx < bullet->bulletX && tile->xVertexTopSx + tileSize > bullet->bulletX) {
             if (tile->getIsDestructible())
                 tile->destroyTile();
             if (!tile->getIsCrossable())
@@ -214,7 +225,7 @@ int main() {
     int numberOfCycles = 0;
     int casualNumber, durationGoal = 0;
     int actualScore;
-    const int writeGoalTime=700;
+    const int writeGoalTime = 700, explosionTime = 500;
     std::string lastMove;
     std::string goalReach;
     // carica l'immagine dello sfondo della pagina iniziale
@@ -494,7 +505,7 @@ int main() {
             if (drawExplosion) {
                 lifeOfExplosion++;
                 window.draw(explosion);
-                if (lifeOfExplosion >= 500) {
+                if (lifeOfExplosion >= explosionTime) {
                     drawExplosion = false;
                     lifeOfExplosion = 0;
                 }
