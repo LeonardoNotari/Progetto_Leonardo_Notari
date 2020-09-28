@@ -6,15 +6,21 @@
 #define PROGETTO_LEONARDO_NOTARI__RESOURCE_H
 
 #include <SFML/Graphics.hpp>
-#include <list>
+#include <vector>
+
+enum class TypeOfSprite{
+    Player,KEnemy,CEnemy,BGun,LGun,MGun,LifePU,EnergyPU
+};
 
 class Resource {
 public:
     static Resource * getInstance();
     ~Resource()=default;
+    sf::Sprite setSprite(TypeOfSprite spriteType);
 private:
     static Resource* instance;
-    std::list<std::string> textures;
+    std::vector<sf::Texture > textures;
+    sf::Sprite sprite;
     Resource();
 };
 

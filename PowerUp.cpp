@@ -35,7 +35,7 @@ void PowerUp::update(const std::string& goalReach) {
     if(goalReach=="TravelGoal1")
         this->effect=this->effect + 100;
     if(goalReach=="TravelGoal2")
-        this->effect=this->effect + 300;
+        this->effect=this->effect + 200;
     if(goalReach=="TravelGoal3")
-        this->effect=this->effect + 600;
+        this->effect=this->effect + 500;
 }

@@ -25,6 +25,8 @@ public:
 
     int getEnergy() const;
 
+    int getScore() const;
+
     float getXMax() const;
 
     float getXMin() const;
@@ -56,15 +58,14 @@ protected:
     std::list<Observer*> observers;
     Weapon *weapon{nullptr};
     int energy;
-    std::string name;
+    int weaponEquipped;
     std::string goal{" "};
     float xMax{8192};
     float xMin{20};
     float yMax{768};
-    float enemyDefeated{0};
-    int score{0};
-    int travel{0};
-    int weaponEquipped{0};
+    float enemyDefeated;
+    int score;
+    int travel;
 };
 
 #endif //PROGETTO_LEONARDO_NOTARI_GAMECHARACTER_H

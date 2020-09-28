@@ -10,7 +10,7 @@
 class WeaponFactory {
 public:
     virtual Weapon *
-    createWeapon(WeaponType type, float x, float y, const sf::Texture &weaponTexture,int level);
+    createWeapon(WeaponType type, float x, float y,int level);
 };
 
 

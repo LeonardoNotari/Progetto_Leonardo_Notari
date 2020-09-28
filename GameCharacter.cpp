@@ -9,7 +9,7 @@
 
 GameCharacter::GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
                              sf::Sprite playerSprite) : Character(gameCharacterHP, gameCharacterX, gameCharacterY,
-                                                                  std::move(playerSprite)), energy(spaceshipEnergy) {}
+                                                                  std::move(playerSprite)), energy(spaceshipEnergy), score(0), travel(0), weaponEquipped(0) {}
 
 bool GameCharacter::isPossibleEquipWeapon(int cost) const {
     if (cost <= this->energy) {
@@ -20,18 +20,18 @@ bool GameCharacter::isPossibleEquipWeapon(int cost) const {
 
 void GameCharacter::equipWeapon(Weapon *gun) {
     if (this->isPossibleEquipWeapon(gun->getWeaponCost())) {
-        this->weaponEquipped+=1;
+        this->weaponEquipped=this->weaponEquipped+1;
         this->weapon = gun;
         gun->equip = true;
     }
     if(weaponEquipped==5){
         this->notify("EquipGoal1");
     }
-    if(weaponEquipped==15){
+    if(weaponEquipped==20){
         this->notify("EquipGoal2");
     }
-    if(weaponEquipped==50){
-        this->notify("EquipGoal1");
+    if(weaponEquipped==80){
+        this->notify("EquipGoal3");
     }
 }
 
@@ -41,6 +41,10 @@ Weapon *GameCharacter::getWeapon() const {
 
 int GameCharacter::getEnergy() const {
     return this->energy;
+}
+
+int GameCharacter::getScore() const {
+    return this->score;
 }
 
 float GameCharacter::getXMax() const {
@@ -60,9 +64,9 @@ void GameCharacter::move(float x, float y,const TileMap& map) {
             posY += y;
         this->travel+=1;
     }
-    if(travel==10000)
-        this->notify("TravelGoal1");
     if(travel==100000)
+        this->notify("TravelGoal1");
+    if(travel==500000)
         this->notify("TravelGoal2");
     if(travel==1000000)
         this->notify("TravelGoal3");
@@ -109,13 +113,13 @@ void GameCharacter::unsubscribe(Observer* o) {
 void GameCharacter::notify(const std::string& goalReach) {
     this->goal=goalReach;
     if(goalReach=="EnemyGoal1" || goalReach=="TravelGoal1" || goalReach=="EquipGoal1"){
-        score+=500;
+        this->score=this->score+500;
     }
     if(goalReach=="EnemyGoal2" || goalReach=="TravelGoal2" || goalReach=="EquipGoal2"){
-        score+=1500;
+        this->score=this->score+500;
     }
     if(goalReach=="EnemyGoal3" || goalReach=="TravelGoal3" || goalReach=="EquipGoal3"){
-        score+=5000;
+        this->score=this->score+500;
     }
     for(auto & observer : this->observers){
         observer->update(goalReach);

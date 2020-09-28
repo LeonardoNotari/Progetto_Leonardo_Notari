@@ -3,20 +3,21 @@
 //
 #include <SFML/Graphics.hpp>
 #include <list>
+#include "Resource.h"
 #include "KamikazeEnemy.h"
 #include "CommonEnemy.h"
 #include "EnemyFactory.h"
 
 
-Enemy *EnemyFactory::createEnemy(EnemyType type, const sf::Texture &enemyTexture, float X, float Y, float speed,int level) {
+Enemy *EnemyFactory::createEnemy(EnemyType type, float X, float Y, float speed,int level) {
     Enemy *enemy = nullptr;
-    sf::Sprite E;
+    sf::Sprite sprite;
     if (type == EnemyType::Kamikaze) {
-        E.setTexture(enemyTexture);
-        enemy = new KamikazeEnemy(100*level, X, Y, 500, speed, E);
+        sprite=Resource::getInstance()->setSprite(TypeOfSprite::KEnemy);
+        enemy = new KamikazeEnemy(100*level, X, Y, 500, speed, sprite);
     } else if (type == EnemyType::Common) {
-        E.setTexture(enemyTexture);
-        enemy = new CommonEnemy(300*level, X, Y, 50, speed, E);
+        sprite=Resource::getInstance()->setSprite(TypeOfSprite::CEnemy);
+        enemy = new CommonEnemy(300*level, X, Y, 50, speed, sprite);
     }
     enemy->sprite.setPosition(sf::Vector2f(enemy->getX(), enemy->getY()));
     return enemy;
