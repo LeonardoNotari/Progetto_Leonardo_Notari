@@ -12,7 +12,7 @@ enum class WeaponType {
     MachineGun, LaserGun, Bazooka, Common
 };
 
-class Weapon: public Observer {
+class Weapon : public Observer {
 public:
 
     explicit Weapon(int basicWeaponPower, int weaponCadence, int weaponRange);
@@ -36,7 +36,7 @@ public:
 
     int getWeaponRange() const;
 
-    void update(const std::string& goalReach) override;
+    void update(const std::string &goalReach) override;
 
     bool equip{false};
 

@@ -32,13 +32,12 @@
 
 import datetime
 import errno
+import gtest_json_test_utils
+import gtest_test_utils
 import json
 import os
 import re
 import sys
-
-import gtest_json_test_utils
-import gtest_test_utils
 
 GTEST_FILTER_FLAG = '--gtest_filter'
 GTEST_LIST_TESTS_FLAG = '--gtest_list_tests'

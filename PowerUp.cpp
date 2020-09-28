@@ -30,12 +30,11 @@ PowerUpType PowerUp::getType() const {
     return this->type;
 }
 
-//FIXME PROVA OBSERVER
-void PowerUp::update(const std::string& goalReach) {
-    if(goalReach=="TravelGoal1")
-        this->effect=this->effect + 100;
-    if(goalReach=="TravelGoal2")
-        this->effect=this->effect + 200;
-    if(goalReach=="TravelGoal3")
-        this->effect=this->effect + 500;
+void PowerUp::update(const std::string &goalReach) {
+    if (goalReach == "TravelGoal1")
+        effect += 100;
+    if (goalReach == "TravelGoal2")
+        effect += 200;
+    if (goalReach == "TravelGoal3")
+        effect += 500;
 }

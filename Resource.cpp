@@ -4,10 +4,10 @@
 
 #include "Resource.h"
 
-Resource* Resource::instance=nullptr;
+Resource *Resource::instance = nullptr;
 
-Resource* Resource::getInstance() {
-    if(instance == nullptr){
+Resource *Resource::getInstance() {
+    if (instance == nullptr) {
         instance = new Resource();
     }
     return instance;
@@ -15,48 +15,34 @@ Resource* Resource::getInstance() {
 
 Resource::Resource() {
     sf::Texture texture;
+    std::string s;
     texture.loadFromFile("image/Ship00.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::Player, texture));
     texture.loadFromFile("image/gun.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::MGun, texture));
     texture.loadFromFile("image/gun1.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::LGun, texture));
     texture.loadFromFile("image/gun2.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::BGun, texture));
     texture.loadFromFile("image/life1.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::LifePU, texture));
     texture.loadFromFile("image/statuetta.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::EnergyPU, texture));
     texture.loadFromFile("image/alien2.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::KEnemy, texture));
     texture.loadFromFile("image/Ship10.png");
-    textures.push_back(texture);
+    textures.insert(std::make_pair(TypeOfSprite::CEnemy, texture));
+    texture.loadFromFile("image/projectile00.png");
+    textures.insert(std::make_pair(TypeOfSprite::CommonBulletSprite, texture));
+    texture.loadFromFile("image/shot7.png");
+    textures.insert(std::make_pair(TypeOfSprite::BazookaBulletSprite, texture));
+    texture.loadFromFile("image/projectile2.png");
+    textures.insert(std::make_pair(TypeOfSprite::LaserBulletSprite, texture));
 }
 
-sf::Sprite Resource::setSprite(TypeOfSprite spriteType){
-    if(spriteType==TypeOfSprite::Player){
-        sprite.setTexture(textures.at(0));
-    }
-    if(spriteType==TypeOfSprite::MGun){
-        sprite.setTexture(textures.at(1));
-    }
-    if(spriteType==TypeOfSprite::LGun){
-        sprite.setTexture(textures.at(2));
-    }
-    if(spriteType==TypeOfSprite::BGun){
-        sprite.setTexture(textures.at(3));
-    }
-    if(spriteType==TypeOfSprite::LifePU){
-        sprite.setTexture(textures.at(4));
-    }
-    if(spriteType==TypeOfSprite::EnergyPU){
-        sprite.setTexture(textures.at(5));
-    }
-    if(spriteType==TypeOfSprite::KEnemy){
-        sprite.setTexture(textures.at(6));
-    }
-    if(spriteType==TypeOfSprite::CEnemy){
-        sprite.setTexture(textures.at(7));
-    }
+sf::Sprite Resource::setSprite(TypeOfSprite spriteType) {
+    sf::Sprite sprite;
+    auto texture= textures.find(spriteType);
+    sprite.setTexture(texture->second);
     return sprite;
 }

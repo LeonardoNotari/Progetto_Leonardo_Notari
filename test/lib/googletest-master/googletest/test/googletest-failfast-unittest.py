@@ -40,8 +40,8 @@ This script tests such functionality by invoking googletest-failfast-unittest_
 line flags.
 """
 
-import os
 import gtest_test_utils
+import os
 
 # Constants.
 

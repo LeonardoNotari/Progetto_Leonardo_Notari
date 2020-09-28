@@ -38,9 +38,9 @@ This script tests such functionality by invoking gtest_list_output_unittest_
  (a program written with Google Test) the command line flags.
 """
 
+import gtest_test_utils
 import os
 import re
-import gtest_test_utils
 
 GTEST_LIST_TESTS_FLAG = '--gtest_list_tests'
 GTEST_OUTPUT_FLAG = '--gtest_output'

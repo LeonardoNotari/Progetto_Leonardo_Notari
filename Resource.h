@@ -8,19 +8,21 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-enum class TypeOfSprite{
-    Player,KEnemy,CEnemy,BGun,LGun,MGun,LifePU,EnergyPU
+enum class TypeOfSprite {
+    Player, KEnemy, CEnemy, BGun, LGun, MGun, LifePU, EnergyPU,CommonBulletSprite,LaserBulletSprite,BazookaBulletSprite
 };
 
 class Resource {
 public:
-    static Resource * getInstance();
-    ~Resource()=default;
+    static Resource *getInstance();
+
+    ~Resource() = default;
+
     sf::Sprite setSprite(TypeOfSprite spriteType);
+
 private:
-    static Resource* instance;
-    std::vector<sf::Texture > textures;
-    sf::Sprite sprite;
+    static Resource *instance;
+    std::map<TypeOfSprite,sf::Texture> textures;
     Resource();
 };
 

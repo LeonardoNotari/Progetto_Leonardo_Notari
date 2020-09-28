@@ -22,42 +22,42 @@ Weapon::Weapon(int weaponPower, int weaponCost, float weaponX, float weaponY, sf
                                                                                               type(weaponType) {}
 
 int Weapon::getWeaponCost() const {
-    return this->cost;
+    return cost;
 }
 
 float Weapon::getWeaponX() const {
-    return this->posX;
+    return posX;
 }
 
 float Weapon::getWeaponY() const {
-    return this->posY;
+    return posY;
 }
 
 int Weapon::getWeaponPower() const {
-    return this->power;
+    return power;
 }
 
 int Weapon::getWeaponBullet() const {
-    return this->bullet;
+    return bullet;
 }
 
 void Weapon::setWeaponBullet() {
-    this->bullet--;
+    bullet--;
 }
 
 int Weapon::getWeaponCadence() const {
-    return this->cadence;
+    return cadence;
 }
 
 int Weapon::getWeaponRange() const {
-    return this->range;
+    return range;
 }
 
-void Weapon::update(const std::string& goalReach) {
-    if(goalReach=="EquipGoal1")
-        this->power = this->power * 2;
-    if(goalReach=="EquipGoal2")
-        this->power = this->power * 5;
-    if(goalReach=="EquipGoal1")
-        this->power = this->power * 10;
+void Weapon::update(const std::string &goalReach) {
+    if (goalReach == "EquipGoal1")
+        power *= 2;
+    if (goalReach == "EquipGoal2")
+        power *= 5;
+    if (goalReach == "EquipGoal1")
+        power *= 10;
 }

@@ -16,9 +16,7 @@ enum class EnemyType {
 class EnemyFactory {
 
 public:
-
-
-    virtual Enemy *createEnemy(EnemyType type, float X, float Y, float speed,int level);
+    virtual Enemy *createEnemy(EnemyType type, float X, float Y, float speed, int level);
 };
 
 

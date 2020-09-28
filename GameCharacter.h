@@ -19,7 +19,7 @@ public:
     GameCharacter(int gameCharacterHP, float gameCharacterX, float gameCharacterY, int spaceshipEnergy,
                   sf::Sprite playerSprite);
 
-    void equipWeapon(Weapon *weapon);
+    bool equipWeapon(Weapon *weapon);
 
     Weapon *getWeapon() const;
 
@@ -31,7 +31,7 @@ public:
 
     float getXMin() const;
 
-    void move(float x, float y,const TileMap& map) override;
+    void move(float x, float y, const TileMap &map) override;
 
     void setEnergy(int incremento);
 
@@ -39,23 +39,23 @@ public:
 
     float getEnemyDefeated() const;
 
-    void reset(int playerEnergy,int hp,float x,float y);
+    void reset(int playerEnergy, int hp, float x, float y);
 
-    void subscribe(Observer* o) override;
+    void subscribe(Observer *o) override;
 
-    void unsubscribe(Observer* o) override;
+    void unsubscribe(Observer *o) override;
 
-    void notify(const std::string& goalReach) override;
-
-    std::string getGoal();
+    void notify(const std::string &goalReach) override;
 
     void setGoal();
+
+    std::string getGoal();
 
     void setScore(int increment);
 
 protected:
     bool isPossibleEquipWeapon(int cost) const;
-    std::list<Observer*> observers;
+    std::list<Observer *> observers;
     Weapon *weapon{nullptr};
     int energy;
     int weaponEquipped;

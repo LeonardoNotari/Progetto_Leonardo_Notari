@@ -10,9 +10,9 @@ KamikazeEnemy::KamikazeEnemy(int enemyHP, float enemyX, float enemyY, int enemyP
                              const sf::Sprite &enemySprite) : Enemy(enemyHP, enemyX, enemyY, enemyPower, enemySpeed,
                                                                     enemySprite) {}
 
-void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY,const TileMap& map) {
-    int damage=0;
-    if (map.isLegalMove(this->posX,this->posY, speed, 0,damage)) {
+void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY, const TileMap &map) {
+    int damage = 0;
+    if (map.isLegalMove(posX, posY, speed, 0, damage)) {
         if (posX < gamecharacterX)
             posX += speed;
         else
@@ -21,7 +21,7 @@ void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY,const TileMa
             posY += speed;
         else
             posY -= speed;
-    }else{
+    } else {
         if (posX > gamecharacterX)
             posX += speed;
         else
@@ -31,14 +31,14 @@ void KamikazeEnemy::move(float gamecharacterX, float gamecharacterY,const TileMa
         else
             posY -= speed;
     }
-    this->receiveDamage(damage);
+    receiveDamage(damage);
 }
 
 void KamikazeEnemy::attack(GameCharacter &player, bool &enemyHasWeapon) {
     if (posX > player.getX() - 30 && posX < player.getX() + 30 &&
         posY > player.getY() - 30 && posY < player.getY() + 30) {
-        player.receiveDamage(this->damage);
-        this->HP = 0;
+        player.receiveDamage(damage);
+        HP = 0;
     }
     enemyHasWeapon = false;
 }

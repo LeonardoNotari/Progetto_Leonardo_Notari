@@ -14,7 +14,7 @@ public:
 
     virtual ~Character();
 
-    virtual void move(float x, float y,const TileMap& map) = 0;
+    virtual void move(float x, float y, const TileMap &map) = 0;
 
     float getX() const;
 

@@ -8,7 +8,7 @@
 #include "Tile.h"
 
 enum class TileType {
-    lavaTile, topRockTile, tipsRockTile, backgroundTile,columnRockTile
+    lavaTile, topRockTile, tipsRockTile, backgroundTile, columnRockTile
 };
 
 class TileFactory {

@@ -35,7 +35,7 @@ bool TileMap::readMatrix(const std::string &tileimg, const std::string &leveltxt
                 this->tiles.push_back(factoryT.createTile(TileType::backgroundTile, auxString, x, y));
             if (auxString == " 3" || auxString == " 7" || auxString == "10")
                 this->tiles.push_back(factoryT.createTile(TileType::tipsRockTile, auxString, x, y));
-            if (auxString == " 2" )
+            if (auxString == " 2")
                 this->tiles.push_back(factoryT.createTile(TileType::columnRockTile, auxString, x, y));
             x += 64;
             if (x == 8192) {
@@ -83,15 +83,15 @@ bool TileMap::loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int he
     return true;
 }
 
-bool TileMap::isLegalMove(float characterX,float characterY,float x, float y,int& damage) const{
+bool TileMap::isLegalMove(float characterX, float characterY, float x, float y, int &damage) const {
     auto it = this->tiles.begin();
     Tile *tile;
     tile = *it;
-    while (characterX+20 + x < tile->xVertexTopSx || (characterX+20) + x > tile->xVertexTopSx + 64 ||
-            (characterY+30) + y < tile->yVertexTopSx || (characterY+30) + y > tile->yVertexTopSx + 64){
+    while (characterX + 20 + x < tile->xVertexTopSx || (characterX + 20) + x > tile->xVertexTopSx + 64 ||
+           (characterY + 30) + y < tile->yVertexTopSx || (characterY + 30) + y > tile->yVertexTopSx + 64) {
         tile = *it;
         it++;
     }
-    damage=tile->getDamage();
+    damage = tile->getDamage();
     return tile->getIsCrossable();
 }

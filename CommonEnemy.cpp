@@ -12,9 +12,9 @@ CommonEnemy::CommonEnemy(int enemyHP, float enemyX, float enemyY, int enemyPower
                          sf::Sprite enemySprite) : Enemy(enemyHP, enemyX, enemyY, enemyPower, enemySpeed,
                                                          std::move(enemySprite)) {}
 
-void CommonEnemy::move(float gamecharacterX, float gamecharacterY,const TileMap& map) {
-    int damage=0;
-    if (map.isLegalMove(this->posX,this->posY, speed, 0,damage)) {
+void CommonEnemy::move(float gamecharacterX, float gamecharacterY, const TileMap &map) {
+    int damage = 0;
+    if (map.isLegalMove(posX, posY, speed, 0, damage)) {
         if (posX < gamecharacterX - 200 || (posX > gamecharacterX && posX < gamecharacterX + 200))
             posX += speed;
         if (posX > gamecharacterX + 200 || (posX < gamecharacterX && posX > gamecharacterX - 200))
@@ -23,7 +23,7 @@ void CommonEnemy::move(float gamecharacterX, float gamecharacterY,const TileMap&
             posY += speed;
         if (posY > gamecharacterY)
             posY -= speed;
-    }else{
+    } else {
         if (posX > gamecharacterX)
             posX += speed;
         else
@@ -37,7 +37,7 @@ void CommonEnemy::move(float gamecharacterX, float gamecharacterY,const TileMap&
 }
 
 void CommonEnemy::attack(GameCharacter &player, bool &enemyHasWeapon) {
-    if (player.getY() <= this->posY + 3 && player.getY() >= this->posY - 3)
+    if (player.getY() <= posY + 3 && player.getY() >= posY - 3)
         enemyHasWeapon = true;
 }
 

@@ -16,12 +16,13 @@ public:
 
     bool loadMap(sf::Vector2u tileSize, unsigned int width, unsigned int height);
 
-    bool isLegalMove(float characterX,float characterY,float x, float y,int& damage) const;
+    bool isLegalMove(float characterX, float characterY, float x, float y, int &damage) const;
 
-    std::vector<Tile*> tiles;
+    std::vector<Tile *> tiles;
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 };
